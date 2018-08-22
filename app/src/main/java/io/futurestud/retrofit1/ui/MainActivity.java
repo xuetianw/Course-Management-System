@@ -1,16 +1,28 @@
 package io.futurestud.retrofit1.ui;
 
+import android.annotation.SuppressLint;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.futurestud.retrofit1.R;
+import io.futurestud.retrofit1.api.model.Game;
 import io.futurestud.retrofit1.api.model.GitHubRepo;
+import io.futurestud.retrofit1.api.model.Move;
 import io.futurestud.retrofit1.api.service.GitHubClient;
-import io.futurestud.retrofit1.ui.adapter.GitHubRepoAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -20,15 +32,26 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
 
     private ListView listView;
+    private TextView textView;
+    private static int numOfRows;
+    private static int numOfCol;
+    Button buttons[][];
+    Retrofit.Builder builder;
+    Retrofit retrofit;
+    GitHubClient client;
+    final String[] previous_play = {null};
+    private static long game_number  = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        numOfRows = 3;
+        numOfCol = 3;
+        textView = (TextView)findViewById(R.id.textView3);
 
-        listView = (ListView) findViewById(R.id.pagination_list);
 
-
+/*
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl("https://api.github.com/")
                 .addConverterFactory(GsonConverterFactory.create());
@@ -51,6 +74,196 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "error :(", Toast.LENGTH_SHORT).show();
             }
         });
+*/
+        builder = new Retrofit.Builder()
+                .baseUrl("http://10.0.2.2:8080/")
+                .addConverterFactory(GsonConverterFactory.create());
+
+        retrofit = builder.build();
+
+        client = retrofit.create(GitHubClient.class);
+
+        Game game = new Game();
+        game.setDescription("My first game!");
+
+        Call<Game> call3 = client.postgames(game);
+        call3.enqueue(new Callback<Game>() {
+            @Override
+            public void onResponse(Call<Game> call, Response<Game> response) {
+                Game game = response.body();
+                textView.setText("currently playing game :" + game.getDescription());
+            }
+
+            @Override
+            public void onFailure(Call<Game> call, Throwable t) {
+
+            }
+        });
+
+
+        Call<List<Game>> call2 = client.getgames();
+
+        call2.enqueue(new Callback<List<Game>>() {
+            @Override
+            public void onResponse(Call<List<Game>> call, Response<List<Game>> response) {
+                List<Game> repos = response.body();
+                //textView.setText("currently playing game " + repos.size());
+            }
+
+            @Override
+            public void onFailure(Call<List<Game>> call, Throwable t) {
+
+            }
+        });
+
+
+
+
+
+        buttons = new Button[numOfRows][numOfCol];
+        populateButtons();
     }
+
+    private void populateButtons() {
+        TableLayout table = (TableLayout) findViewById(R.id.tableForButtons);
+
+        for (int row = 0; row < numOfRows; row++){
+            TableRow tableRow = new TableRow(this);
+            tableRow.setLayoutParams(new TableLayout.LayoutParams(
+                    TableLayout.LayoutParams.MATCH_PARENT,
+                    TableLayout.LayoutParams.MATCH_PARENT,
+                    1.0f
+            ));
+            table.addView(tableRow);
+
+            for (int col = 0; col < numOfCol; col++){
+                final Button button = new Button(this);
+                button.setLayoutParams(new TableRow.LayoutParams(
+                        TableRow.LayoutParams.MATCH_PARENT,
+                        TableRow.LayoutParams.MATCH_PARENT,
+                        1.0f));
+
+                //make text not clip on small buttons
+                button.setPadding(0,0,0,0);
+                final int finalCol = col;
+                final int finalRow = row;
+
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        gridButtonClicked(finalCol, finalRow);
+                    }
+                });
+
+
+                tableRow.addView(button);
+                buttons[row][col] = button;
+            }
+        }
+    };
+
+    private void gridButtonClicked(final int col, final int row) {
+
+
+
+        final Move move = new Move();
+
+        if(previous_play[0] == null) {
+            move.setPiece("X");
+        } else {
+            if(previous_play[0].equals("X")) {
+                move.setPiece("O");
+            } else {
+                move.setPiece("X");
+            }
+        }
+        move.setRow(row);
+        move.setCol(col);
+        Call<Move> call = client.makeMove(game_number, move);
+        call.enqueue(new Callback<Move>() {
+            @Override
+            public void onResponse(Call<Move> call, Response<Move> response) {
+                if(!response.isSuccessful()) {
+                    Toast.makeText(getApplicationContext(), "Wrong", Toast.LENGTH_LONG).show();
+                } else {
+                    Move move = response.body();
+
+                    previous_play[0] = move.getPiece();
+
+                    final int server_row = move.getRow();
+                    final int server_col = move.getCol();
+                    Button button = buttons [server_row][server_col];
+
+                    // Lock Button Sizes: before scaling the buttons
+                    lockButtonSizes();
+
+                    //Scale Image to button
+                    int newWidth = button.getWidth();
+                    int newHeight = button.getHeight();
+                    Bitmap originalBitmap;
+                    if(move.getPiece().equals("O")) {
+                        originalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.circle);
+                    } else {
+                        originalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.cross);
+                    }
+
+                    Bitmap scaledBitmap = Bitmap.createScaledBitmap(originalBitmap, newWidth, newHeight, true);
+                    Resources resource = getResources();
+                    button.setBackground(new BitmapDrawable(resource, scaledBitmap));
+                    button.setBackground(new BitmapDrawable(resource, scaledBitmap));
+
+                    Call<Game> call2 = client.getGame(game_number);
+                    call2.enqueue(new Callback<Game>() {
+                        @Override
+                        public void onResponse(Call<Game> call, Response<Game> response) {
+                            if(!response.isSuccessful()) {
+                                Toast.makeText(getApplicationContext(), "Wrong", Toast.LENGTH_LONG).show();
+                            } else {
+                                Game game = response.body();
+                                if(!game.getGameState().equals("PLAYING")){
+                                    textView.setText(game.getGameState());
+                                }
+                            }
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<Game> call, Throwable t) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Move> call, Throwable t) {
+
+            }
+        });
+
+
+
+
+
+
+
+    }
+
+    private void lockButtonSizes() {
+        for (int row = 0; row < numOfRows; row++){
+            for (int col = 0; col < numOfCol; col++){
+                Button button = buttons[row][col];
+
+                int width = button.getWidth();
+                button.setMinWidth(width);
+                button.setMaxWidth(width);
+
+                int height = button.getHeight();
+                button.setMinHeight(height);
+                button.setMaxHeight(height);
+            }
+        }
+    }
+
 
 }
