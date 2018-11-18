@@ -17,6 +17,8 @@ import android.widget.Toast;
 import io.futurestud.retrofit1.R;
 import io.futurestud.retrofit1.api.model.Game;
 import io.futurestud.retrofit1.api.model.Move;
+import io.futurestud.retrofit1.api.proxy.ProxyBuilder;
+import io.futurestud.retrofit1.api.proxy.WGServerProxy;
 import io.futurestud.retrofit1.api.service.GitHubClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,26 +33,27 @@ public class MainActivity extends AppCompatActivity {
     private static int numOfRows;
     private static int numOfCol;
     Button buttons[][];
-    Retrofit.Builder builder;
-    Retrofit retrofit;
-    GitHubClient client;
+//    Retrofit.Builder builder;
+//    Retrofit retrofit;
+//    GitHubClient client;
     String[] previous_play = {null};
     private static long game_number  = 1;
+    private WGServerProxy proxy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+//        // Build Retrofit proxy object for server
+//        retrofit = new Retrofit.Builder()
+//                .baseUrl("http://10.0.2.2:8080/")
+//                .addConverterFactory(GsonConverterFactory.create()).build();
+//
+//        client = retrofit.create(GitHubClient.class);
 
+        proxy = ProxyBuilder.getProxy();
 
-        builder = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8080/")
-                .addConverterFactory(GsonConverterFactory.create());
-
-        retrofit = builder.build();
-
-        client = retrofit.create(GitHubClient.class);
 
         Button button = (Button) findViewById(R.id.btnnewGame);
         setupNewGameButton(button);
@@ -62,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         Game game = new Game();
         game.setDescription("My first game!");
 
-        Call<Game> call3 = client.postgames(game);
+        Call<Game> call3 = proxy.postgames(game);
         call3.enqueue(new Callback<Game>() {
             @Override
             public void onResponse(Call<Game> call, Response<Game> response) {
@@ -90,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                 game_number ++;
 
 
-                Call<Game> newGameCall = client.postgames(game);
+                Call<Game> newGameCall = proxy.postgames(game);
                 newGameCall.enqueue(new Callback<Game>() {
                     @Override
                     public void onResponse(Call<Game> call, Response<Game> response) {
@@ -172,8 +175,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void gridButtonClicked(final int col, final int row) {
 
-
-
         final Move move = new Move();
 
         if(previous_play[0] == null) {
@@ -187,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
         }
         move.setRow(row);
         move.setCol(col);
-        Call<Move> call = client.makeMove(game_number, move);
+        Call<Move> call = proxy.makeMove(game_number, move);
         call.enqueue(new Callback<Move>() {
             @Override
             public void onResponse(Call<Move> call, Response<Move> response) {
@@ -221,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
                     button.setBackground(new BitmapDrawable(resource, scaledBitmap));
 
 
-                    Call<Game> checkStatusCall = client.getGame(game_number);
+                    Call<Game> checkStatusCall = proxy.getGame(game_number);
                     checkStatusCall.enqueue(new Callback<Game>() {
                         @Override
                         public void onResponse(Call<Game> call, Response<Game> response) {
