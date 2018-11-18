@@ -16,6 +16,8 @@ import retrofit2.http.Path;
 
 public interface GitHubClient {
 
+    @POST("/games")
+    Game createNewGame(@Body Game game);
 
     @GET("games")
     Call<List<Game>> getgames();

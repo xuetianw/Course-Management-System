@@ -44,4 +44,12 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="14dp"
         android:text="TextView" />
+
+    <Button
+        android:id="@+id/btnnewGame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:text="new Game" />
 </RelativeLayout>

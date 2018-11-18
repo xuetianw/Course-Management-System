@@ -14,8 +14,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.List;
-
 import io.futurestud.retrofit1.R;
 import io.futurestud.retrofit1.api.model.Game;
 import io.futurestud.retrofit1.api.model.Move;
@@ -36,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     Retrofit.Builder builder;
     Retrofit retrofit;
     GitHubClient client;
-    final String[] previous_play = {null};
+    String[] previous_play = {null};
     private static long game_number  = 1;
 
     @Override
@@ -53,6 +51,9 @@ public class MainActivity extends AppCompatActivity {
         retrofit = builder.build();
 
         client = retrofit.create(GitHubClient.class);
+
+        Button button = (Button) findViewById(R.id.btnnewGame);
+        setupNewGameButton(button);
 
         numOfRows = 3;
         numOfCol = 3;
@@ -75,28 +76,60 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        buttons = new Button[numOfRows][numOfCol];
+        populateButtons();
+    }
 
-        Call<List<Game>> call2 = client.getgames();
-
-        call2.enqueue(new Callback<List<Game>>() {
+    private void setupNewGameButton(Button button) {
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onResponse(Call<List<Game>> call, Response<List<Game>> response) {
-                List<Game> repos = response.body();
-                //textView.setText("currently playing game " + repos.size());
-            }
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "new game", Toast.LENGTH_LONG).show();
+                final Game game = new Game();
+                game.setDescription("New game!");
+                game_number ++;
 
-            @Override
-            public void onFailure(Call<List<Game>> call, Throwable t) {
+
+                Call<Game> newGameCall = client.postgames(game);
+                newGameCall.enqueue(new Callback<Game>() {
+                    @Override
+                    public void onResponse(Call<Game> call, Response<Game> response) {
+                        previous_play[0] = null;
+                        textView.setText("new game");
+
+                        for (int row = 0; row < numOfRows; row++){
+                            for (int col = 0; col < numOfCol; col++){
+                                Button button = buttons [row][col];
+                                lockButtonSizes();
+
+                                //Scale Image to button
+                                int newWidth = button.getWidth();
+                                int newHeight = button.getHeight();
+                                Bitmap originalBitmap;
+                                originalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.blank);
+
+
+                                Bitmap scaledBitmap = Bitmap.createScaledBitmap(originalBitmap, newWidth, newHeight, true);
+                                Resources resource = getResources();
+                                button.setBackground(new BitmapDrawable(resource, scaledBitmap));
+                                button.setBackground(new BitmapDrawable(resource, scaledBitmap));
+                            }
+                        }
+
+                        // Lock Button Sizes: before scaling the buttons
+
+
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<Game> call, Throwable t) {
+
+                    }
+                });
 
             }
         });
-
-
-
-
-
-        buttons = new Button[numOfRows][numOfCol];
-        populateButtons();
     }
 
     private void populateButtons() {
@@ -159,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Move> call, Response<Move> response) {
                 if(!response.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), "Wrong", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Game is finished", Toast.LENGTH_LONG).show();
                 } else {
                     Move move = response.body();
 
@@ -187,8 +220,9 @@ public class MainActivity extends AppCompatActivity {
                     button.setBackground(new BitmapDrawable(resource, scaledBitmap));
                     button.setBackground(new BitmapDrawable(resource, scaledBitmap));
 
-                    Call<Game> call2 = client.getGame(game_number);
-                    call2.enqueue(new Callback<Game>() {
+
+                    Call<Game> checkStatusCall = client.getGame(game_number);
+                    checkStatusCall.enqueue(new Callback<Game>() {
                         @Override
                         public void onResponse(Call<Game> call, Response<Game> response) {
                             if(!response.isSuccessful()) {
