@@ -1,6 +1,5 @@
 package io.futurestud.retrofit1.ui;
 
-import android.annotation.SuppressLint;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,12 +14,10 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.futurestud.retrofit1.R;
 import io.futurestud.retrofit1.api.model.Game;
-import io.futurestud.retrofit1.api.model.GitHubRepo;
 import io.futurestud.retrofit1.api.model.Move;
 import io.futurestud.retrofit1.api.service.GitHubClient;
 import retrofit2.Call;
@@ -46,35 +43,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        numOfRows = 3;
-        numOfCol = 3;
-        textView = (TextView)findViewById(R.id.textView3);
 
 
-/*
-        Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("https://api.github.com/")
-                .addConverterFactory(GsonConverterFactory.create());
 
-        Retrofit retrofit = builder.build();
-
-        GitHubClient client = retrofit.create(GitHubClient.class);
-        Call<List<GitHubRepo>> call = client.reposForUser("fs-opensource");
-
-        call.enqueue(new Callback<List<GitHubRepo>>() {
-            @Override
-            public void onResponse(Call<List<GitHubRepo>> call, Response<List<GitHubRepo>> response) {
-                List<GitHubRepo> repos = response.body();
-
-                listView.setAdapter(new GitHubRepoAdapter(MainActivity.this, repos));
-            }
-
-            @Override
-            public void onFailure(Call<List<GitHubRepo>> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "error :(", Toast.LENGTH_SHORT).show();
-            }
-        });
-*/
         builder = new Retrofit.Builder()
                 .baseUrl("http://10.0.2.2:8080/")
                 .addConverterFactory(GsonConverterFactory.create());
@@ -82,6 +53,10 @@ public class MainActivity extends AppCompatActivity {
         retrofit = builder.build();
 
         client = retrofit.create(GitHubClient.class);
+
+        numOfRows = 3;
+        numOfCol = 3;
+        textView = (TextView)findViewById(R.id.textView3);
 
         Game game = new Game();
         game.setDescription("My first game!");
@@ -217,7 +192,8 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(Call<Game> call, Response<Game> response) {
                             if(!response.isSuccessful()) {
-                                Toast.makeText(getApplicationContext(), "Wrong", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Game is finished",
+                                        Toast.LENGTH_LONG).show();
                             } else {
                                 Game game = response.body();
                                 if(!game.getGameState().equals("PLAYING")){
@@ -240,12 +216,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
-
-
-
-
 
     }
 
