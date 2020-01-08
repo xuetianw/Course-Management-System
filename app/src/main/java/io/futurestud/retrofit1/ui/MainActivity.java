@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -28,15 +29,19 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
+//    private static final String TAG = "ApiKeyAct";
+    private static final String TAG = "TAG";
+
     private ListView listView;
-    private TextView textView;
+    private TextView textView ;
     private static int numOfRows;
     private static int numOfCol;
     Button buttons[][];
+    TableLayout table;
 //    Retrofit.Builder builder;
 //    Retrofit retrofit;
 //    GitHubClient client;
-    String[] previous_play = {null};
+    String previous_play = null;
     private static long game_number  = 1;
     private WGServerProxy proxy;
 
@@ -44,13 +49,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-//        // Build Retrofit proxy object for server
-//        retrofit = new Retrofit.Builder()
-//                .baseUrl("http://10.0.2.2:8080/")
-//                .addConverterFactory(GsonConverterFactory.create()).build();
-//
-//        client = retrofit.create(GitHubClient.class);
+        textView = (TextView)findViewById(R.id.textView3);
 
         proxy = ProxyBuilder.getProxy();
 
@@ -60,83 +59,31 @@ public class MainActivity extends AppCompatActivity {
 
         numOfRows = 3;
         numOfCol = 3;
-        textView = (TextView)findViewById(R.id.textView3);
 
         Game game = new Game();
-        game.setDescription("My first game!");
 
         Call<Game> call3 = proxy.postgames(game);
-        call3.enqueue(new Callback<Game>() {
-            @Override
-            public void onResponse(Call<Game> call, Response<Game> response) {
-                Game game = response.body();
-                textView.setText("currently playing game :" + game.getDescription());
-            }
-
-            @Override
-            public void onFailure(Call<Game> call, Throwable t) {
-
-            }
-        });
+        ProxyBuilder.callProxy(getApplicationContext(), call3, returnedKey -> response(returnedKey));
 
         buttons = new Button[numOfRows][numOfCol];
         populateButtons();
     }
 
     private void setupNewGameButton(Button button) {
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "new game", Toast.LENGTH_LONG).show();
-                final Game game = new Game();
-                game.setDescription("New game!");
-                game_number ++;
+        button.setOnClickListener(view -> {
+            Toast.makeText(getApplicationContext(), "new game", Toast.LENGTH_LONG).show();
+            final Game game = new Game();
+            game.setDescription("New game!");
+            game_number++;
 
 
-                Call<Game> newGameCall = proxy.postgames(game);
-                newGameCall.enqueue(new Callback<Game>() {
-                    @Override
-                    public void onResponse(Call<Game> call, Response<Game> response) {
-                        previous_play[0] = null;
-                        textView.setText("new game");
-
-                        for (int row = 0; row < numOfRows; row++){
-                            for (int col = 0; col < numOfCol; col++){
-                                Button button = buttons [row][col];
-                                lockButtonSizes();
-
-                                //Scale Image to button
-                                int newWidth = button.getWidth();
-                                int newHeight = button.getHeight();
-                                Bitmap originalBitmap;
-                                originalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.blank);
-
-
-                                Bitmap scaledBitmap = Bitmap.createScaledBitmap(originalBitmap, newWidth, newHeight, true);
-                                Resources resource = getResources();
-                                button.setBackground(new BitmapDrawable(resource, scaledBitmap));
-                                button.setBackground(new BitmapDrawable(resource, scaledBitmap));
-                            }
-                        }
-
-                        // Lock Button Sizes: before scaling the buttons
-
-
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<Game> call, Throwable t) {
-
-                    }
-                });
-
-            }
+            Call<Game> newGameCall = proxy.postgames(game);
+            ProxyBuilder.callProxy(getApplicationContext(), newGameCall, returnedKey -> new_game_response(returnedKey));
         });
     }
 
     private void populateButtons() {
-        TableLayout table = (TableLayout) findViewById(R.id.tableForButtons);
+        table = (TableLayout) findViewById(R.id.tableForButtons);
 
         for (int row = 0; row < numOfRows; row++){
             TableRow tableRow = new TableRow(this);
@@ -159,12 +106,7 @@ public class MainActivity extends AppCompatActivity {
                 final int finalCol = col;
                 final int finalRow = row;
 
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        gridButtonClicked(finalCol, finalRow);
-                    }
-                });
+                button.setOnClickListener(view -> gridButtonClicked(finalCol, finalRow));
 
 
                 tableRow.addView(button);
@@ -177,10 +119,10 @@ public class MainActivity extends AppCompatActivity {
 
         final Move move = new Move();
 
-        if(previous_play[0] == null) {
+        if(previous_play == null) {
             move.setPiece("X");
         } else {
-            if(previous_play[0].equals("X")) {
+            if(previous_play.equals("X")) {
                 move.setPiece("O");
             } else {
                 move.setPiece("X");
@@ -197,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Move move = response.body();
 
-                    previous_play[0] = move.getPiece();
+                    previous_play = move.getPiece();
 
                     final int server_row = move.getRow();
                     final int server_col = move.getCol();
@@ -270,5 +212,49 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void response(Game response) {
+        notifyUserViaLogAndToast("Server replied to login request (no content was expected).");
+        Game game = response;
+        textView.setText("currently playing game :" + game.getDescription());
+    }
+
+    private void move_response(Response<Move> response) {
+
+    }
+
+    private void new_game_response(Game response) {
+        notifyUserViaLogAndToast("Server replied request of starting a new game.");
+        previous_play = null;
+        textView.setText("new game");
+
+        for (int row = 0; row < numOfRows; row++){
+            for (int col = 0; col < numOfCol; col++){
+                Button button1 = buttons [row][col];
+//                lockButtonSizes();
+
+                //Scale Image to button
+                int newWidth = button1.getWidth();
+                int newHeight = button1.getHeight();
+                Bitmap originalBitmap;
+                originalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.blank);
+
+
+                Bitmap scaledBitmap = Bitmap.createScaledBitmap(originalBitmap, newWidth, newHeight, true);
+                Resources resource = getResources();
+                button1.setBackground(new BitmapDrawable(resource, scaledBitmap));
+                button1.setBackground(new BitmapDrawable(resource, scaledBitmap));
+            }
+        }
+    }
+
+    private void response(Void returnedNothing) {
+        notifyUserViaLogAndToast("Server replied to login request (no content was expected).");
+    }
+
+    private void notifyUserViaLogAndToast(String message) {
+        Log.w(TAG, message);
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
 
 }
+
