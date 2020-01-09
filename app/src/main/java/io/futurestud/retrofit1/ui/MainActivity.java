@@ -20,7 +20,6 @@ import io.futurestud.retrofit1.api.model.Game;
 import io.futurestud.retrofit1.api.model.Move;
 import io.futurestud.retrofit1.api.proxy.ProxyBuilder;
 import io.futurestud.retrofit1.api.proxy.WGServerProxy;
-import io.futurestud.retrofit1.api.service.GitHubClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

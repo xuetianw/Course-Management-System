@@ -6,7 +6,6 @@ import android.widget.Toast;
 
 import java.io.IOException;
 
-import io.futurestud.retrofit1.api.service.GitHubClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
