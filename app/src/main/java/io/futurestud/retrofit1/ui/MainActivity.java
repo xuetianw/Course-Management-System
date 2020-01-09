@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         numOfCol = 3;
 
         Game game = new Game();
+        game.setDescription("first game!");
 
         Call<Game> call3 = proxy.postgames(game);
         ProxyBuilder.callProxy(getApplicationContext(), call3, returnedKey -> response(returnedKey));
@@ -131,69 +132,9 @@ public class MainActivity extends AppCompatActivity {
         move.setRow(row);
         move.setCol(col);
         Call<Move> call = proxy.makeMove(game_number, move);
-        call.enqueue(new Callback<Move>() {
-            @Override
-            public void onResponse(Call<Move> call, Response<Move> response) {
-                if(!response.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), "Game is finished", Toast.LENGTH_LONG).show();
-                } else {
-                    Move move = response.body();
-
-                    previous_play = move.getPiece();
-
-                    final int server_row = move.getRow();
-                    final int server_col = move.getCol();
-                    Button button = buttons [server_row][server_col];
-
-                    // Lock Button Sizes: before scaling the buttons
-                    lockButtonSizes();
-
-                    //Scale Image to button
-                    int newWidth = button.getWidth();
-                    int newHeight = button.getHeight();
-                    Bitmap originalBitmap;
-                    if(move.getPiece().equals("O")) {
-                        originalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.circle);
-                    } else {
-                        originalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.cross);
-                    }
-
-                    Bitmap scaledBitmap = Bitmap.createScaledBitmap(originalBitmap, newWidth, newHeight, true);
-                    Resources resource = getResources();
-                    button.setBackground(new BitmapDrawable(resource, scaledBitmap));
-                    button.setBackground(new BitmapDrawable(resource, scaledBitmap));
 
 
-                    Call<Game> checkStatusCall = proxy.getGame(game_number);
-                    checkStatusCall.enqueue(new Callback<Game>() {
-                        @Override
-                        public void onResponse(Call<Game> call, Response<Game> response) {
-                            if(!response.isSuccessful()) {
-                                Toast.makeText(getApplicationContext(), "Game is finished",
-                                        Toast.LENGTH_LONG).show();
-                            } else {
-                                Game game = response.body();
-                                if(!game.getGameState().equals("PLAYING")){
-                                    textView.setText(game.getGameState());
-                                }
-                            }
-
-                        }
-
-                        @Override
-                        public void onFailure(Call<Game> call, Throwable t) {
-
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Move> call, Throwable t) {
-
-            }
-        });
-
+        ProxyBuilder.callProxy(getApplicationContext(), call, returnedKey -> move_response(returnedKey));
     }
 
     private void lockButtonSizes() {
@@ -211,6 +152,76 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+
+    private void move_response(Move response) {
+        if(response == null) {
+            Toast.makeText(getApplicationContext(), "Game is finished", Toast.LENGTH_LONG).show();
+        } else {
+            Move move = response;
+
+            previous_play = move.getPiece();
+
+            final int server_row = move.getRow();
+            final int server_col = move.getCol();
+            Button button = buttons [server_row][server_col];
+
+            // Lock Button Sizes: before scaling the buttons
+            lockButtonSizes();
+
+            //Scale Image to button
+            int newWidth = button.getWidth();
+            int newHeight = button.getHeight();
+            Bitmap originalBitmap;
+            if(move.getPiece().equals("O")) {
+                originalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.circle);
+            } else {
+                originalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.cross);
+            }
+
+            Bitmap scaledBitmap = Bitmap.createScaledBitmap(originalBitmap, newWidth, newHeight, true);
+            Resources resource = getResources();
+            button.setBackground(new BitmapDrawable(resource, scaledBitmap));
+            button.setBackground(new BitmapDrawable(resource, scaledBitmap));
+
+
+            Call<Game> checkStatusCall = proxy.getGame(game_number);
+            ProxyBuilder.callProxy(getApplicationContext(), checkStatusCall, returnedKey -> get_game_response(returnedKey));
+//                    checkStatusCall.enqueue(new Callback<Game>() {
+//                        @Override
+//                        public void onResponse(Call<Game> call, Response<Game> response) {
+//                            if(!response.isSuccessful()) {
+//                                Toast.makeText(getApplicationContext(), "Game is finished",
+//                                        Toast.LENGTH_LONG).show();
+//                            } else {
+//                                Game game = response.body();
+//                                if(!game.getGameState().equals("PLAYING")){
+//                                    textView.setText(game.getGameState());
+//                                }
+//                            }
+//
+//                        }
+//
+//                        @Override
+//                        public void onFailure(Call<Game> call, Throwable t) {
+//
+//                        }
+//                    });
+        }
+    }
+
+    private void get_game_response(Game response) {
+        if((response == null)) {
+            Toast.makeText(getApplicationContext(), "Game is finished",
+                    Toast.LENGTH_LONG).show();
+        } else {
+            Game game = response;
+            if(!game.getGameState().equals("PLAYING")){
+                textView.setText(game.getGameState());
+            }
+        }
+    }
+
 
     private void response(Game response) {
         notifyUserViaLogAndToast("Server replied to login request (no content was expected).");
