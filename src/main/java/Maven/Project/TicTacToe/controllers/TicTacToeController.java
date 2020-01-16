@@ -1,6 +1,7 @@
 package Maven.Project.TicTacToe.controllers;
 
 
+import Maven.Project.TicTacToe.exception.InvalidMoveException;
 import Maven.Project.TicTacToe.model.Board;
 import Maven.Project.TicTacToe.model.Game;
 import Maven.Project.TicTacToe.model.Move;

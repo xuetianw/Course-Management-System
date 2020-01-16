@@ -1,6 +1,6 @@
 package Maven.Project.TicTacToe.model;
 
-import Maven.Project.TicTacToe.controllers.InvalidMoveException;
+import Maven.Project.TicTacToe.exception.InvalidMoveException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.util.ArrayList;

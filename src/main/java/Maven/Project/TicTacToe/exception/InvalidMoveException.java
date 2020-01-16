@@ -1,4 +1,4 @@
-package Maven.Project.TicTacToe.controllers;
+package Maven.Project.TicTacToe.exception;
 
 /**
  * Created by wu on 2018-03-18.
