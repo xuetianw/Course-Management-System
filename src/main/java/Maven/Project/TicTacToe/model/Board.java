@@ -5,9 +5,9 @@ package Maven.Project.TicTacToe.model;
     each cell.
  */
 public class Board {
-    private StringBuilder row1 = null;
-    private StringBuilder row2 = null;
-    private StringBuilder row3 = null;
+    private StringBuilder row1;
+    private StringBuilder row2;
+    private StringBuilder row3;
 
     public Board(){
         row1 = new StringBuilder ("   ");

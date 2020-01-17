@@ -20,7 +20,7 @@ public class ScoreBoardController {
     }
 
 
-    @GetMapping("/allPlayers")
+    @GetMapping("/players")
     public List<Player> getAllPlayers(){
         return playerService.findAll();
     }
