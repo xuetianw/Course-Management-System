@@ -1,4 +1,4 @@
-package Maven.Project.TicTacToe;
+package Maven.Project.TicTacToe.others;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
