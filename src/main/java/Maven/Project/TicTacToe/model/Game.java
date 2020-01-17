@@ -18,15 +18,8 @@ public class Game {
     private String description;
     private String gameState = "PLAYING";
     private ArrayList<Move> moves = new ArrayList<>();
-    private Board board = new Board();
 
-    public Board getBoard() {
-        return board;
-    }
-
-    public void setBoard(Board board) {
-        this.board = board;
-    }
+    private StringBuilder[] board;
 
     public long getId() {
         return id;
@@ -60,6 +53,18 @@ public class Game {
         return moves;
     }
 
+    public void setCell(int row, int col, char piece) {
+        board[row] = new StringBuilder().append(board[row].substring(0, col)).append(piece).append(board[row].substring(col + 1, 3));
+    }
+
+    public void setBoard(StringBuilder[] board) {
+        this.board = board;
+    }
+
+    public StringBuilder[] getBoard() {
+        return board;
+    }
+
     public Move preCheck(Move newMove) throws InvalidMoveException {
         if (moves.size() == 0 && newMove.getPiece() == 'O') {
             throw new InvalidMoveException("X must make the first move.");
@@ -77,16 +82,45 @@ public class Game {
             throw new InvalidMoveException("Invalid piece (must be X or O)");
         }
 
-        if (getBoard().getRows()[newMove.getRow()].charAt(newMove.getCol()) != ' ') {
+        if (board[newMove.getRow()].charAt(newMove.getCol()) != ' ') {
             throw new InvalidMoveException("Invalid move location (duplicate of earlier move)");
         }
 
         newMove.setMoveNumber(moves.size() + 1);
         moves.add(newMove);
-        board.setBoard(newMove.getRow() , newMove.getCol(), newMove.getPiece());
+        setCell(newMove.getRow() , newMove.getCol(), newMove.getPiece());
 
-        gameState = board.checkGameStatus();
+        gameState = checkGameStatus();
 
         return newMove;
+    }
+
+    public String checkGameStatus() {
+        String row1 = board[0].toString();
+        String row2 = board[1].toString();
+        String row3 = board[2].toString();
+        String s  = "" + row1.charAt(0) + row2.charAt(1) + row3.charAt(2);
+        String s1 = "" + row1.charAt(2) + row2.charAt(1) + row3.charAt(0);
+        String s2 = "" + row1.charAt(0) + row2.charAt(0) + row3.charAt(0);
+        String s3 = "" + row1.charAt(1) + row2.charAt(1) + row3.charAt(1);
+        String s4 = "" + row1.charAt(2) + row2.charAt(2) + row3.charAt(2);
+        if (row1.equals("XXX")  || row2.equals("XXX") || row3.equals("XXX")
+                || s.equals("XXX")
+                || s1.equals("XXX")
+                || s2.equals("XXX")
+                || s3.equals("XXX")
+                || s4.equals("XXX"))
+        {
+            return "X_WIN";
+        } else if (row1.equals("OOO")  || row2.equals("OOO") || row3.equals("OOO")
+                || s.equals("OOO")
+                || s1.equals("OOO")
+                || s2.equals("OOO")
+                || s3.equals("OOO")
+                || s4.equals("OOO"))
+        {
+            return "O_WON";
+        }
+        return "PLAYING";
     }
 }

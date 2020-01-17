@@ -3,7 +3,6 @@ package Maven.Project.TicTacToe.controllers;
 
 import Maven.Project.TicTacToe.exception.InvalidMoveException;
 import Maven.Project.TicTacToe.exception.ResourceNotFoundException;
-import Maven.Project.TicTacToe.model.Board;
 import Maven.Project.TicTacToe.model.Game;
 import Maven.Project.TicTacToe.model.Move;
 import org.springframework.http.HttpStatus;
@@ -26,6 +25,10 @@ public class TicTacToeController {
     @PostMapping("/games")
     @ResponseStatus(HttpStatus.CREATED)
     public Game createNewGame(@RequestBody Game game){
+        game.setBoard(new StringBuilder[3]);
+        for (int i = 0; i < game.getBoard().length; i++) {
+            game.getBoard()[i] = new StringBuilder("   ");
+        }
         game.setId(nextId.incrementAndGet());
         games.add(game);
         return game;
@@ -65,7 +68,7 @@ public class TicTacToeController {
 
 
     @GetMapping("/games/{id}/board")
-    public Board getboard(@PathVariable("id") int gameId) throws ResourceNotFoundException {
+    public StringBuilder[] getboard(@PathVariable("id") int gameId) throws ResourceNotFoundException {
         for(Game game : games) {
             if(game.getId() == gameId){
                 return game.getBoard();
