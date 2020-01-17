@@ -16,54 +16,45 @@ public class Board {
     }
 
     public StringBuilder getRow1() {
-        if(row1.length() == 0 ) {
-            row1 = new StringBuilder ("   ");
-        }
         return row1;
     }
 
-    public void setRow1(int col, String piece) {
-        if (piece.equals("X")){
+    public void setRow1(int col, char piece) {
+        if (piece == 'X'){
             row1.setCharAt(col, 'X');
-        } else if (piece.equals("O")){
+        } else if (piece == 'O') {
             row1.setCharAt(col, 'O');
         }
     }
 
     public StringBuilder getRow2() {
-        if(row2.length() == 0 ) {
-            row2 = new StringBuilder ("   ");
-        }
         return row2;
     }
 
-    public void setRow2(int col, String piece) {
-        if (piece. equals ("X")){
+    public void setRow2(int col, char piece) {
+        if (piece == 'X') {
             row2.setCharAt(col, 'X');
-        } else if (piece.equals("O")){
+        } else if (piece == 'O') {
             row2.setCharAt(col, 'O');
         }
     }
 
     public StringBuilder getRow3() {
-        if(row3.length() == 0 ) {
-            row3 = new StringBuilder ("   ");
-        }
         return row3;
     }
 
-    public void setRow3(int col, String piece) {
-        if (piece.equals ("X")){
+    public void setRow3(int col, char piece) {
+        if (piece == 'X') {
             row3.setCharAt(col, 'X');
-        } else if (piece .equals("O")){
+        } else if (piece == 'O') {
             row3.setCharAt(col, 'O');
         }
     }
 
     public String checkGameStatus() {
-        String row1 = getRow1().toString();
-        String row2 = getRow2().toString();
-        String row3 = getRow3().toString();
+        String row1 = this.row1.toString();
+        String row2 = this.row2.toString();
+        String row3 = this.row3.toString();
 
         String s  = "" + row1.charAt(0) + row2.charAt(1) + row3.charAt(2);
         String s1 = "" + row1.charAt(2) + row2.charAt(1) + row3.charAt(0);

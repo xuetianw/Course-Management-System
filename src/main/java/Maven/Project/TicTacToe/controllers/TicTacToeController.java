@@ -39,9 +39,8 @@ public class TicTacToeController {
 
     @GetMapping("/games/{id}/moves")
     public List<Move> getAllMoves(@PathVariable("id") int gameId) throws ResourceNotFoundException {
-        for(Game game : games)
-        {
-            if(game.getId() == gameId){
+        for(Game game : games) {
+            if(game.getId() == gameId) {
                 return game.getMoves();
             }
         }
@@ -55,8 +54,7 @@ public class TicTacToeController {
 
     @GetMapping("/games/{id}")
     public Game getOneGame(@PathVariable("id") long gameId) throws ResourceNotFoundException {
-        for(Game game : games)
-        {
+        for(Game game : games) {
             if(game.getId() == gameId){
                 return game;
             }
@@ -68,8 +66,7 @@ public class TicTacToeController {
 
     @GetMapping("/games/{id}/board")
     public Board getboard(@PathVariable("id") int gameId) throws ResourceNotFoundException {
-        for(Game game : games)
-        {
+        for(Game game : games) {
             if(game.getId() == gameId){
                 return game.getBoard();
             }
@@ -81,7 +78,7 @@ public class TicTacToeController {
     @ResponseStatus(HttpStatus.CREATED)
     public Move makeMove(@PathVariable("id") int gameId,
                             @RequestBody Move newMove) throws InvalidMoveException, ResourceNotFoundException {
-        for(Game game : games){
+        for(Game game : games) {
             if(game.getId() == gameId){
                 return game.preCheck(newMove);
             }

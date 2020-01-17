@@ -6,14 +6,14 @@ package Maven.Project.TicTacToe.model;
  */
 public class Move {
     private int moveNumber = 0;
-    private String piece;
+    private char piece;
     private int row;
     private int col;
 
     public Move() {
     }
 
-    public Move(int moveNumber, String piece, int row, int col) {
+    public Move(int moveNumber, char piece, int row, int col) {
         this.moveNumber = moveNumber;
         this.piece = piece;
         this.row = row;
@@ -28,11 +28,11 @@ public class Move {
         this.moveNumber = moveNumber;
     }
 
-    public String getPiece() {
+    public char getPiece() {
         return piece;
     }
 
-    public void setPiece(String piece) {
+    public void setPiece(char piece) {
         this.piece = piece;
     }
 
