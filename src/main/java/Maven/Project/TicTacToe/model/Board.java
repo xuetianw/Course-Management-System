@@ -61,54 +61,30 @@ public class Board {
     }
 
     public String checkGameStatus() {
+        String row1 = getRow1().toString();
+        String row2 = getRow2().toString();
+        String row3 = getRow3().toString();
 
-        if (this.getRow1().charAt(0) == 'X' && getRow1().charAt(1) == 'X'&&
-                getRow1().charAt(2) == 'X') {
+        String s  = "" + row1.charAt(0) + row2.charAt(1) + row3.charAt(2);
+        String s1 = "" + row1.charAt(2) + row2.charAt(1) + row3.charAt(0);
+        String s2 = "" + row1.charAt(0) + row2.charAt(0) + row3.charAt(0);
+        String s3 = "" + row1.charAt(1) + row2.charAt(1) + row3.charAt(1);
+        String s4 = "" + row1.charAt(2) + row2.charAt(2) + row3.charAt(2);
+        if (row1.equals("XXX")  || row2.equals("XXX") || row3.equals("XXX")
+                || s.equals("XXX")
+                || s1.equals("XXX")
+                || s2.equals("XXX")
+                || s3.equals("XXX")
+                || s4.equals("XXX"))
+        {
             return "X_WIN";
-        } else if ((getRow2().charAt(0) == 'X' && getRow2().charAt(1) == 'X'&&
-                getRow2().charAt(2) == 'X')) {
-            return "X_WIN";
-        } else if ((getRow3().charAt(0) == 'X' && getRow3().charAt(1) == 'X'&&
-                getRow3().charAt(2) == 'X')) {
-            return "X_WIN";
-        } else if ((getRow1().charAt(0) == 'X' && getRow2().charAt(1) == 'X'&&
-                getRow3().charAt(2) == 'X')) {
-            return "X_WIN";
-        } else if ((getRow1().charAt(2) == 'X' && getRow2().charAt(1) == 'X'&&
-                getRow3().charAt(0) == 'X')) {
-            return "X_WIN";
-        } else if ((getRow1().charAt(0) == 'X' && getRow2().charAt(0) == 'X'&&
-                getRow3().charAt(0) == 'X')) {
-            return "X_WIN";
-        } else if ((getRow1().charAt(1) == 'X' && getRow2().charAt(1) == 'X'&&
-                getRow3().charAt(1) == 'X')) {
-            return "X_WIN";
-        } else if ((getRow1().charAt(2) == 'X' && getRow2().charAt(2) == 'X'&&
-                getRow3().charAt(2) == 'X')) {
-            return "X_WIN";
-        } else if (getRow1().charAt(0) == 'O' && getRow1().charAt(1) == 'O'&&
-                getRow1().charAt(2) == 'O') {
-            return "O_WON";
-        } else if ((getRow2().charAt(0) == 'O' && getRow2().charAt(1) == 'O'&&
-                getRow2().charAt(2) == 'O')) {
-            return "O_WON";
-        } else if ((getRow3().charAt(0) == 'O' && getRow3().charAt(1) == 'O'&&
-                getRow3().charAt(2) == 'O')) {
-            return "O_WON";
-        } else if ((getRow1().charAt(0) == 'O' && getRow2().charAt(1) == 'O'&&
-                getRow3().charAt(2) == 'O')) {
-            return "O_WON";
-        } else if ((getRow1().charAt(2) == 'O' && getRow2().charAt(1) == 'O'&&
-                getRow3().charAt(0) == 'O')) {
-            return "O_WON";
-        } else if ((getRow1().charAt(0) == 'O' && getRow2().charAt(0) == 'O'&&
-                getRow3().charAt(0) == 'O')) {
-            return "O_WON";
-        } else if ((getRow1().charAt(1) == 'O' && getRow2().charAt(1) == 'O'&&
-                getRow3().charAt(1) == 'O')) {
-            return "O_WON";
-        } else if ((getRow1().charAt(2) == 'O' && getRow2().charAt(2) == 'O'&&
-                getRow3().charAt(2) == 'O')) {
+        } else if (row1.equals("OOO")  || row2.equals("OOO") || row3.equals("OOO")
+                || s.equals("OOO")
+                || s1.equals("OOO")
+                || s2.equals("OOO")
+                || s3.equals("OOO")
+                || s4.equals("OOO"))
+        {
             return "O_WON";
         }
         return null;
