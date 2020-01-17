@@ -132,7 +132,6 @@ public class MainActivity extends AppCompatActivity {
         move.setCol(col);
         Call<Move> call = proxy.makeMove(game_number, move);
 
-
         ProxyBuilder.callProxy(getApplicationContext(), call, returnedKey -> move_response(returnedKey));
     }
 

@@ -15,15 +15,8 @@ public class Game {
     private String description;
     private String gameState = "PLAYING";
     private ArrayList<Move> moves = new ArrayList<>();
-    private Board board = new Board();
 
-    public Board getBoard() {
-        return board;
-    }
-
-    public void setBoard(Board board) {
-        this.board = board;
-    }
+    private StringBuilder[] board;
 
     public long getId() {
         return id;
@@ -49,12 +42,25 @@ public class Game {
         this.gameState = gameState;
     }
 
-    public void setMoves(ArrayList<Move> moveList){
+    public void setMoves(ArrayList<Move> moveList) {
         this.moves = moveList;
     }
 
-    public ArrayList<Move> getMoves(){
+    public ArrayList<Move> getMoves() {
         return moves;
     }
+
+    public void setCell(int row, int col, char piece) {
+        board[row] = new StringBuilder().append(board[row].substring(0, col)).append(piece).append(board[row].substring(col + 1, 3));
+    }
+
+    public void setBoard(StringBuilder[] board) {
+        this.board = board;
+    }
+
+    public StringBuilder[] getBoard() {
+        return board;
+    }
+
 
 }

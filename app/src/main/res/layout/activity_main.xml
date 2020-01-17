@@ -14,10 +14,10 @@
         android:id="@+id/tableForButtons"
         android:layout_width="290dp"
         android:layout_height="388dp"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="26dp"
-        android:layout_marginEnd="28dp">
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="55dp"
+        android:layout_marginBottom="41dp">
 
         <TableRow
             android:layout_width="match_parent"
