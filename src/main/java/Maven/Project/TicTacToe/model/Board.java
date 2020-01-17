@@ -19,35 +19,25 @@ public class Board {
         return row1;
     }
 
-    public void setRow1(int col, char piece) {
-        if (piece == 'X'){
-            row1.setCharAt(col, 'X');
-        } else if (piece == 'O') {
-            row1.setCharAt(col, 'O');
-        }
-    }
 
     public StringBuilder getRow2() {
         return row2;
     }
 
-    public void setRow2(int col, char piece) {
-        if (piece == 'X') {
-            row2.setCharAt(col, 'X');
-        } else if (piece == 'O') {
-            row2.setCharAt(col, 'O');
-        }
-    }
+
 
     public StringBuilder getRow3() {
         return row3;
     }
 
-    public void setRow3(int col, char piece) {
-        if (piece == 'X') {
-            row3.setCharAt(col, 'X');
-        } else if (piece == 'O') {
-            row3.setCharAt(col, 'O');
+
+    public void setBoard(int row, int col, char piece) {
+        if (row == 0) {
+            row1.setCharAt(col, piece);
+        } else if (row == 1) {
+            row2.setCharAt(col, piece);
+        } else if (row == 2) {
+            row3.setCharAt(col, piece);
         }
     }
 
@@ -78,6 +68,6 @@ public class Board {
         {
             return "O_WON";
         }
-        return null;
+        return "PLAYING";
     }
 }

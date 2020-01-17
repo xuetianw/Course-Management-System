@@ -89,13 +89,7 @@ public class Game {
         }
         newMove.setMoveNumber(getMoves().size() + 1);
         getMoves().add(newMove);
-        if (newMove.getRow() == 0) {
-            board.setRow1(newMove.getCol(), newMove.getPiece());
-        } else if (newMove.getRow() == 1) {
-            board.setRow2(newMove.getCol(), newMove.getPiece());
-        } else if (newMove.getRow() == 2) {
-            board.setRow3(newMove.getCol(), newMove.getPiece());
-        }
+        board.setBoard(newMove.getRow() , newMove.getCol(), newMove.getPiece());
 
         gameState = board.checkGameStatus();
 
