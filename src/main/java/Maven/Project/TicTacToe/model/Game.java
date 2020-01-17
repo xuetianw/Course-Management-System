@@ -61,15 +61,15 @@ public class Game {
     }
 
     public Move preCheck(Move newMove) throws InvalidMoveException {
-        if (getMoves().size() == 0 && newMove.getPiece() == 'O') {
+        if (moves.size() == 0 && newMove.getPiece() == 'O') {
             throw new InvalidMoveException("X must make the first move.");
         } else if (newMove.getCol() < 0 || newMove.getRow() < 0 ||
                 newMove.getCol() > 2 || newMove.getRow() > 2) {
             throw new InvalidMoveException("Invalid move location (must be 0-2 for row and column)");
         } else if (!getGameState().equals("PLAYING")) {
             throw new InvalidMoveException("Additional moves not allowed: game is over");
-        } else if (getMoves().size() != 0 && getMoves()
-                .get((getMoves().size()) - 1)
+        } else if (moves.size() != 0 && moves
+                .get((moves.size()) - 1)
                 .getPiece()
                 == newMove.getPiece()) {
             throw new InvalidMoveException("Player may not play twice in a row.");
@@ -77,18 +77,12 @@ public class Game {
             throw new InvalidMoveException("Invalid piece (must be X or O)");
         }
 
-        int col = newMove.getCol();
-        int row = newMove.getRow();
-        Board board = getBoard();
-        StringBuilder st = null;
-        if (row == 0) { st = board.getRow1(); }
-        else if (row == 1) { st = board.getRow2(); }
-        else if (row == 2) { st = board.getRow3();}
-        if (st != null && st.charAt(col) != ' ') {
+        if (getBoard().getRows()[newMove.getRow()].charAt(newMove.getCol()) != ' ') {
             throw new InvalidMoveException("Invalid move location (duplicate of earlier move)");
         }
-        newMove.setMoveNumber(getMoves().size() + 1);
-        getMoves().add(newMove);
+
+        newMove.setMoveNumber(moves.size() + 1);
+        moves.add(newMove);
         board.setBoard(newMove.getRow() , newMove.getCol(), newMove.getPiece());
 
         gameState = board.checkGameStatus();

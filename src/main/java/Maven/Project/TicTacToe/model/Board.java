@@ -5,47 +5,32 @@ package Maven.Project.TicTacToe.model;
     each cell.
  */
 public class Board {
-    private StringBuilder row1;
-    private StringBuilder row2;
-    private StringBuilder row3;
+    private StringBuilder[] rows;
 
     public Board(){
-        row1 = new StringBuilder ("   ");
-        row2 = new StringBuilder ("   ");
-        row3 = new StringBuilder ("   ");
+        rows = new StringBuilder[3];
+        for (int i = 0; i < rows.length; i++) {
+            rows[i] = new StringBuilder("   ");
+        }
     }
 
-    public StringBuilder getRow1() {
-        return row1;
+    public void setRows(StringBuilder[] rows) {
+        this.rows = rows;
     }
 
-
-    public StringBuilder getRow2() {
-        return row2;
-    }
-
-
-
-    public StringBuilder getRow3() {
-        return row3;
+    public StringBuilder[] getRows() {
+        return rows;
     }
 
 
     public void setBoard(int row, int col, char piece) {
-        if (row == 0) {
-            row1.setCharAt(col, piece);
-        } else if (row == 1) {
-            row2.setCharAt(col, piece);
-        } else if (row == 2) {
-            row3.setCharAt(col, piece);
-        }
+        rows[row] = new StringBuilder().append(rows[row].substring(0, col)).append(piece).append(rows[row].substring(col + 1, 3));
     }
 
     public String checkGameStatus() {
-        String row1 = this.row1.toString();
-        String row2 = this.row2.toString();
-        String row3 = this.row3.toString();
-
+        String row1 = rows[0].toString();
+        String row2 = rows[1].toString();
+        String row3 = rows[2].toString();
         String s  = "" + row1.charAt(0) + row2.charAt(1) + row3.charAt(2);
         String s1 = "" + row1.charAt(2) + row2.charAt(1) + row3.charAt(0);
         String s2 = "" + row1.charAt(0) + row2.charAt(0) + row3.charAt(0);
