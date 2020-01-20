@@ -200,6 +200,7 @@ public class MainActivity extends AppCompatActivity {
         notifyUserViaLogAndToast("Server replied request of starting a new game.");
         previous_play = null;
         textView.setText("new game");
+        game_number = response.getId();
 
         setupTableAndBts();
     }
