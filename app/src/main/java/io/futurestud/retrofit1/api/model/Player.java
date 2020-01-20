@@ -7,7 +7,6 @@ public class Player {
 
     private String last_name;
 
-
     private int times_played;
 
     public String getFirst_name() {

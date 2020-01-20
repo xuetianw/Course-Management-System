@@ -18,7 +18,7 @@ public class ProxyBuilder {
     public static WGServerProxy getProxy() {
         // Build Retrofit proxy object for server
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8080/")
+                .baseUrl(SERVER_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

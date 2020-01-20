@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     Button[][] buttons;
 
 
-    String previous_play = null;
+    char previous_play;
     private static long game_number = 0;
     private WGServerProxy proxy;
 
@@ -106,13 +106,13 @@ public class MainActivity extends AppCompatActivity {
 
         final Move move = new Move();
 
-        if(previous_play == null) {
-            move.setPiece("X");
+        if(previous_play == 'n') {
+            move.setPiece('X');
         } else {
-            if(previous_play.equals("X")) {
-                move.setPiece("O");
+            if(previous_play == 'X') {
+                move.setPiece('O');
             } else {
-                move.setPiece("X");
+                move.setPiece('X');
             }
         }
         move.setRow(row);
@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
             int newWidth = button.getWidth();
             int newHeight = button.getHeight();
             Bitmap originalBitmap;
-            if(response.getPiece().equals("O")) {
+            if(response.getPiece() =='O') {
                 originalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.circle);
             } else {
                 originalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.cross);
@@ -186,27 +186,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void response(Game response) {
-        notifyUserViaLogAndToast("Server replied to login request (no content was expected).");
-        Game game = response;
-        textView.setText("currently playing game :" + game.getDescription());
-    }
-
-    private void move_response(Response<Move> response) {
-
-    }
-
     private void new_game_response(Game response) {
         notifyUserViaLogAndToast("Server replied request of starting a new game.");
-        previous_play = null;
+        previous_play = 'n';
         textView.setText("new game");
         game_number = response.getId();
 
         setupTableAndBts();
-    }
-
-    private void response(Void returnedNothing) {
-        notifyUserViaLogAndToast("Server replied to login request (no content was expected).");
     }
 
     private void notifyUserViaLogAndToast(String message) {
