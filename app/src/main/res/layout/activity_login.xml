@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.LoginActivity">
+
+    <TextView
+        android:id="@+id/first_name_TV"
+        android:layout_width="0dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="65dp"
+        android:layout_marginBottom="63dp"
+        android:text="First Name"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/last_name_TV"
+        app:layout_constraintEnd_toEndOf="@+id/first_name_ET"
+        app:layout_constraintStart_toStartOf="@+id/first_name_ET"
+        app:layout_constraintTop_toTopOf="@+id/login_email_ET" />
+
+    <TextView
+        android:id="@+id/last_name_TV"
+        android:layout_width="0dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="53dp"
+        android:layout_marginBottom="56dp"
+        android:text="last name"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/last_name_ET"
+        app:layout_constraintEnd_toEndOf="@+id/first_name_ET"
+        app:layout_constraintStart_toStartOf="@+id/first_name_ET"
+        app:layout_constraintTop_toTopOf="@+id/first_name_ET" />
+
+    <Button
+        android:id="@+id/login_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="62dp"
+        android:text="login"
+        app:layout_constraintStart_toEndOf="@+id/register_button"
+        app:layout_constraintTop_toBottomOf="@+id/last_name_ET" />
+
+    <Button
+        android:id="@+id/register_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="76dp"
+        android:text="register"
+        app:layout_constraintBaseline_toBaselineOf="@+id/login_button"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/user_email_TV"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="27dp"
+        android:layout_marginBottom="11dp"
+        android:text="Email"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/login_email_ET"
+        app:layout_constraintEnd_toEndOf="@+id/login_email_ET"
+        app:layout_constraintStart_toStartOf="@+id/login_email_ET"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/login_email_ET"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="79dp"
+        android:ems="10"
+        android:hint="Email"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="@+id/first_name_TV"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/last_name_ET"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:ems="10"
+        android:hint="last name"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="@+id/last_name_TV"
+        app:layout_constraintTop_toBottomOf="@+id/first_name_ET" />
+
+    <EditText
+        android:id="@+id/first_name_ET"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="84dp"
+        android:layout_marginTop="71dp"
+        android:ems="10"
+        android:hint="first name"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_email_ET" />
+</android.support.constraint.ConstraintLayout>
