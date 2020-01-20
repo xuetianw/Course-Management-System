@@ -35,9 +35,11 @@ public interface WGServerProxy {
     @GET("games/{id}")
     Call<Game> getGame(@Path("id") Long id);
 
-
     @GET("/players")
     Call<Player> getAllPlayer();
+
+    @GET ("/player")
+    Call<Player> getlPlayer(@Body Player player);
 
     @POST("/player")
     Call<Player> make_player(@Body Player player);

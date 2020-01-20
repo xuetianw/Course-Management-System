@@ -21,10 +21,7 @@ import io.futurestud.retrofit1.api.model.Move;
 import io.futurestud.retrofit1.api.proxy.ProxyBuilder;
 import io.futurestud.retrofit1.api.proxy.WGServerProxy;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,15 +30,13 @@ public class MainActivity extends AppCompatActivity {
 
     private ListView listView;
     private TextView textView ;
-    private static int numOfRows;
-    private static int numOfCol;
-    Button buttons[][];
-    TableLayout table;
-//    Retrofit.Builder builder;
-//    Retrofit retrofit;
-//    GitHubClient client;
+    private static int numOfRows = 3;
+    private static int numOfCol = 3;;
+    Button[][] buttons;
+
+
     String previous_play = null;
-    private static long game_number  = 1;
+    private static long game_number = 0;
     private WGServerProxy proxy;
 
     @Override
@@ -52,38 +47,30 @@ public class MainActivity extends AppCompatActivity {
 
         proxy = ProxyBuilder.getProxy();
 
-
-        Button button = (Button) findViewById(R.id.btnnewGame);
-        setupNewGameButton(button);
-
-        numOfRows = 3;
-        numOfCol = 3;
-
-        Game game = new Game();
-        game.setDescription("first game!");
-
-        Call<Game> call3 = proxy.postgames(game);
-        ProxyBuilder.callProxy(getApplicationContext(), call3, returnedKey -> response(returnedKey));
+        Button new_game_btn = (Button) findViewById(R.id.btnnewGame);
+        setupNewGameButton(new_game_btn);
 
         buttons = new Button[numOfRows][numOfCol];
-        populateButtons();
     }
 
     private void setupNewGameButton(Button button) {
-        button.setOnClickListener(view -> {
-            Toast.makeText(getApplicationContext(), "new game", Toast.LENGTH_LONG).show();
-            final Game game = new Game();
-            game.setDescription("New game!");
-            game_number++;
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(MainActivity.this.getApplicationContext(), "new game", Toast.LENGTH_LONG).show();
+                final Game game = new Game();
+                String description = String.format("%s game", game_number++);
+                game.setDescription(description);
 
-
-            Call<Game> newGameCall = proxy.postgames(game);
-            ProxyBuilder.callProxy(getApplicationContext(), newGameCall, returnedKey -> new_game_response(returnedKey));
+                Call<Game> newGameCall = proxy.postgames(game);
+                ProxyBuilder.callProxy(MainActivity.this.getApplicationContext(), newGameCall, returnedKey -> MainActivity.this.new_game_response(returnedKey));
+            }
         });
     }
 
-    private void populateButtons() {
-        table = (TableLayout) findViewById(R.id.tableForButtons);
+    private void setupTableAndBts() {
+        TableLayout table = (TableLayout) findViewById(R.id.tableForButtons);
+        table.removeAllViews();
 
         for (int row = 0; row < numOfRows; row++){
             TableRow tableRow = new TableRow(this);
@@ -156,12 +143,11 @@ public class MainActivity extends AppCompatActivity {
         if(response == null) {
             Toast.makeText(getApplicationContext(), "Game is finished", Toast.LENGTH_LONG).show();
         } else {
-            Move move = response;
 
-            previous_play = move.getPiece();
+            previous_play = response.getPiece();
 
-            final int server_row = move.getRow();
-            final int server_col = move.getCol();
+            final int server_row = response.getRow();
+            final int server_col = response.getCol();
             Button button = buttons [server_row][server_col];
 
             // Lock Button Sizes: before scaling the buttons
@@ -171,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
             int newWidth = button.getWidth();
             int newHeight = button.getHeight();
             Bitmap originalBitmap;
-            if(move.getPiece().equals("O")) {
+            if(response.getPiece().equals("O")) {
                 originalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.circle);
             } else {
                 originalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.cross);
@@ -185,26 +171,7 @@ public class MainActivity extends AppCompatActivity {
 
             Call<Game> checkStatusCall = proxy.getGame(game_number);
             ProxyBuilder.callProxy(getApplicationContext(), checkStatusCall, returnedKey -> get_game_response(returnedKey));
-//                    checkStatusCall.enqueue(new Callback<Game>() {
-//                        @Override
-//                        public void onResponse(Call<Game> call, Response<Game> response) {
-//                            if(!response.isSuccessful()) {
-//                                Toast.makeText(getApplicationContext(), "Game is finished",
-//                                        Toast.LENGTH_LONG).show();
-//                            } else {
-//                                Game game = response.body();
-//                                if(!game.getGameState().equals("PLAYING")){
-//                                    textView.setText(game.getGameState());
-//                                }
-//                            }
-//
-//                        }
-//
-//                        @Override
-//                        public void onFailure(Call<Game> call, Throwable t) {
-//
-//                        }
-//                    });
+
         }
     }
 
@@ -214,9 +181,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
         } else {
             Game game = response;
-            if(!game.getGameState().equals("PLAYING")){
-                textView.setText(game.getGameState());
-            }
+            textView.setText(game.getGameState());
         }
     }
 
@@ -236,24 +201,7 @@ public class MainActivity extends AppCompatActivity {
         previous_play = null;
         textView.setText("new game");
 
-        for (int row = 0; row < numOfRows; row++){
-            for (int col = 0; col < numOfCol; col++){
-                Button button1 = buttons [row][col];
-//                lockButtonSizes();
-
-                //Scale Image to button
-                int newWidth = button1.getWidth();
-                int newHeight = button1.getHeight();
-                Bitmap originalBitmap;
-                originalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.blank);
-
-
-                Bitmap scaledBitmap = Bitmap.createScaledBitmap(originalBitmap, newWidth, newHeight, true);
-                Resources resource = getResources();
-                button1.setBackground(new BitmapDrawable(resource, scaledBitmap));
-                button1.setBackground(new BitmapDrawable(resource, scaledBitmap));
-            }
-        }
+        setupTableAndBts();
     }
 
     private void response(Void returnedNothing) {
