@@ -1,4 +1,9 @@
+USE `employee_directory`;
+
 INSERT INTO `user` VALUES 
-	('Leslie','Andrews','leslie@luv2code.com', 1)
+	('leslie@luv2code.com','Leslie','Andrews', 2);
 
-
+INSERT INTO `user` VALUES 
+	('leslie@luv2code.com','Leslie','Andrews', 2)
+    
+    

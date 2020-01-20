@@ -25,6 +25,19 @@ public class ScoreBoardController {
         return playerService.findAll();
     }
 
+    @GetMapping("/player")
+    public Player findPlayer(@RequestBody Player player) {
+
+        Player thePlayer = playerService.findById(player.getEmail());
+
+        if (thePlayer != null) {
+            return player;
+        }
+
+        throw new RuntimeException("player email does not existed - ");
+
+    }
+
     @PostMapping("/player")
     @ResponseStatus(HttpStatus.CREATED)
     public Player createNewPlayer(@RequestBody Player player) {
