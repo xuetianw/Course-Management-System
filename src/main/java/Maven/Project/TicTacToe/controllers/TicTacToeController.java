@@ -68,7 +68,7 @@ public class TicTacToeController {
 
 
     @GetMapping("/games/{id}/board")
-    public StringBuilder[] getboard(@PathVariable("id") int gameId) throws ResourceNotFoundException {
+    public StringBuilder[] getBoard(@PathVariable("id") int gameId) throws ResourceNotFoundException {
         for(Game game : games) {
             if(game.getId() == gameId){
                 return game.getBoard();

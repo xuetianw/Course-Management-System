@@ -1,15 +1,16 @@
 package Maven.Project.TicTacToe.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="user")
 public class Player {
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name="id")
+    private int id;
+
     @Column(name="email")
     private String email;
 
@@ -19,9 +20,17 @@ public class Player {
     @Column(name="last_name")
     private String last_name;
 
-
     @Column(name="played_time")
     private int times_played;
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getFirst_name() {
         return first_name;

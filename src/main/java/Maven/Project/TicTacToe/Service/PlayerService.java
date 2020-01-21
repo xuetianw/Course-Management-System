@@ -8,10 +8,10 @@ public interface PlayerService {
 
     public List<Player> findAll();
 
-    public Player findById(String theId);
+    public Player findById(int theId);
 
     public void save(Player theEmployee);
 
-    public void deleteById(String theId);
+    public void deleteById(int theId);
 
 }

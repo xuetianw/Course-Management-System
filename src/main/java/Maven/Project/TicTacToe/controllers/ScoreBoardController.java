@@ -25,59 +25,60 @@ public class ScoreBoardController {
         return playerService.findAll();
     }
 
-    @GetMapping("/player")
-    public Player findPlayer(@RequestBody Player player) {
+    @GetMapping("/player/{playerId}")
+    public Player findPlayer(@PathVariable int playerId) {
 
-        Player thePlayer = playerService.findById(player.getEmail());
+        Player thePlayer = playerService.findById(playerId);
 
         if (thePlayer != null) {
-            return player;
+            return thePlayer;
         }
 
-        throw new RuntimeException("player email does not existed - ");
+        throw new RuntimeException("player id does not existed - " + playerId);
 
     }
 
-    @PostMapping("/player")
+    @PostMapping("/players")
     @ResponseStatus(HttpStatus.CREATED)
     public Player createNewPlayer(@RequestBody Player player) {
+        player.setId(0);
 
-        Player thePlayer = playerService.findById(player.getEmail());
-
-        if (thePlayer != null) {
-            throw new RuntimeException("player email existed - " + player.getEmail());
-        }
+//        Player thePlayer = playerService.findById(player.getId());
+//
+//        if (thePlayer != null) {
+//            throw new RuntimeException("player id existed - " + player.getEmail());
+//        }
 
         playerService.save(player);
         return player;
     }
 
-    @PutMapping("/player")
+    @PutMapping("/players")
     @ResponseStatus(HttpStatus.CREATED)
     public Player updatePlayer(@RequestBody Player player){
-        Player thePlayer = playerService.findById(player.getEmail());
-
-        if (thePlayer == null) {
-            throw new RuntimeException("player email not found - " + player.getEmail());
-        }
+//        Player thePlayer = playerService.findById(player.getId());
+//
+//        if (thePlayer == null) {
+//            throw new RuntimeException("player email not found - " + player.getEmail());
+//        }
 
         playerService.save(player);
         return player;
     }
 
-    @DeleteMapping("/player")
-    public String deleteEmployee(@RequestBody Player player) {
+    @DeleteMapping("/player/{employeeId}")
+    public String deleteEmployee(@PathVariable int playerId) {
 
-        Player thePlayer = playerService.findById(player.getEmail());
+        Player thePlayer = playerService.findById(playerId);
 
         // throw exception if null
 
         if (thePlayer == null) {
-            throw new RuntimeException("player email not found - " + player.getEmail());
+            throw new RuntimeException("player id not found - " + playerId);
         }
 
-        playerService.deleteById(player.getEmail());
+        playerService.deleteById(playerId);
 
-        return "Deleted player email - " + player.getEmail();
+        return ("Deleted player id - " + playerId);
     }
 }

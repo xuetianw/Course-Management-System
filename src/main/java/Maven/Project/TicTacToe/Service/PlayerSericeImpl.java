@@ -24,8 +24,8 @@ public class PlayerSericeImpl implements PlayerService {
     }
 
     @Override
-    public Player findById(String email) {
-        Optional<Player> result = playerRepository.findById(email);
+    public Player findById(int theId) {
+        Optional<Player> result = playerRepository.findById(theId);
 
         if (result.isPresent()) {
             return result.get();
@@ -41,7 +41,7 @@ public class PlayerSericeImpl implements PlayerService {
     }
 
     @Override
-    public void deleteById(String theId) {
+    public void deleteById(int theId) {
         playerRepository.deleteById(theId);
     }
 }
