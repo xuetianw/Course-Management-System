@@ -1,4 +1,4 @@
-USE `employee_directory`;
+USE `tic-tac-toe`;
 
 INSERT INTO `user` VALUES 
 	('leslie@luv2code.com','Leslie','Andrews', 2);
