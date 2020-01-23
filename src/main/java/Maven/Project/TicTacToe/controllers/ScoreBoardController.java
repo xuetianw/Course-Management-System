@@ -1,9 +1,7 @@
 package Maven.Project.TicTacToe.controllers;
 
-import Maven.Project.TicTacToe.Service.PlayerService;
-import Maven.Project.TicTacToe.exception.ResourceNotFoundException;
-import Maven.Project.TicTacToe.model.Game;
-import Maven.Project.TicTacToe.model.Player;
+import Maven.Project.TicTacToe.Service.UserService;
+import Maven.Project.TicTacToe.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -14,27 +12,27 @@ import java.util.List;
 @RestController
 public class ScoreBoardController {
 
-    private PlayerService playerService;
+    private UserService userService;
 //    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public ScoreBoardController(PlayerService playerService) {
-        this.playerService = playerService;
+    public ScoreBoardController(UserService userService) {
+        this.userService = userService;
     }
 
 
     @GetMapping("/players")
-    public List<Player> getAllPlayers() {
-        return playerService.findAll();
+    public List<User> getAllPlayers() {
+        return userService.findAll();
     }
 
     @GetMapping("/players/{playerId}")
-    public Player findPlayer(@PathVariable int playerId) {
+    public User findPlayer(@PathVariable int playerId) {
 
-        Player thePlayer = playerService.findById(playerId);
+        User theUser = userService.findById(playerId);
 
-        if (thePlayer != null) {
-            return thePlayer;
+        if (theUser != null) {
+            return theUser;
         }
 
         throw new RuntimeException("player id does not existed - " + playerId);
@@ -43,51 +41,51 @@ public class ScoreBoardController {
 
     @PostMapping("/players")
     @ResponseStatus(HttpStatus.CREATED)
-    public Player createNewPlayer(@RequestBody Player player) {
-        player.setId(0);
+    public User createNewPlayer(@RequestBody User user) {
+        user.setId(0);
 
-//        Player thePlayer = playerService.findById(player.getId());
+//        User thePlayer = userService.findById(user.getId());
 //
 //        if (thePlayer != null) {
-//            throw new RuntimeException("player id existed - " + player.getEmail());
+//            throw new RuntimeException("user id existed - " + user.getEmail());
 //        }
 
-        playerService.save(player);
-        return player;
+        userService.save(user);
+        return user;
     }
 
     @PutMapping("/players")
     @ResponseStatus(HttpStatus.CREATED)
-    public Player updatePlayer(@RequestBody Player player) {
-//        Player thePlayer = playerService.findById(player.getId());
+    public User updatePlayer(@RequestBody User user) {
+//        User thePlayer = userService.findById(user.getId());
 //
 //        if (thePlayer == null) {
-//            throw new RuntimeException("player email not found - " + player.getEmail());
+//            throw new RuntimeException("user email not found - " + user.getEmail());
 //        }
 
-        playerService.save(player);
-        return player;
+        userService.save(user);
+        return user;
     }
 
     @DeleteMapping("/players/{playerId}")
     public String deletePlayer(@PathVariable int playerId) {
 
-        Player thePlayer = playerService.findById(playerId);
+        User theUser = userService.findById(playerId);
 
         // throw exception if null
 
-        if (thePlayer == null) {
+        if (theUser == null) {
             throw new RuntimeException("player id not found - " + playerId);
         }
 
-        playerService.deleteById(playerId);
+        userService.deleteById(playerId);
 
         return ("Deleted player id - " + playerId);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/signup")
-    public Player addNewUser(@RequestBody Player newUser) {
+    public User addNewUser(@RequestBody User newUser) {
 
 
         // Clear its current ID (as we are going to give it one):
@@ -106,12 +104,12 @@ public class ScoreBoardController {
         }
 
         // Already exist?
-        List<Player> myUsers = playerService.findAll();
-        for (Player user : myUsers) {
+        List<User> myUsers = userService.findAll();
+        for (User user : myUsers) {
             if (user != null
                     && user.getEmail().equals(newUser.getEmail())
             ) {
-                throw new RuntimeException("User with same email address already created.");
+                throw new InvalidLoginException("User with same email address already created.");
             }
         }
 
@@ -119,16 +117,16 @@ public class ScoreBoardController {
 //        newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
 
         // Add it to repository, returning what is actually created in DB
-        playerService.save(newUser);
+        userService.save(newUser);
         return newUser;
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/login")
-    public Player login(@RequestBody Player theUser) {
+    public User login(@RequestBody User theUser) {
         // Already exist?
-        List<Player> myUsers = playerService.findAll();
-        for (Player user : myUsers) {
+        List<User> myUsers = userService.findAll();
+        for (User user : myUsers) {
             if (user != null
                     && user.getEmail().equals(theUser.getEmail())
                     && user.getPassword().equals(theUser.getPassword())
@@ -137,6 +135,15 @@ public class ScoreBoardController {
             }
         }
 
-        throw new UnauthorisedException("invalid credential.");
+        throw new InvalidLoginException("invalid credential.");
     }
+
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public class InvalidLoginException extends RuntimeException {
+        public InvalidLoginException(String s){
+            super(s);
+        }
+    }
+
+
 }
