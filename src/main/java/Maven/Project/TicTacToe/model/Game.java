@@ -65,7 +65,7 @@ public class Game {
         return board;
     }
 
-    public Move preCheck(Move newMove) throws InvalidMoveException {
+    public Move preCheck(Move newMove) {
         if (moves.size() == 0 && newMove.getPiece() == 'O') {
             throw new InvalidMoveException("X must make the first move.");
         } else if (newMove.getCol() < 0 || newMove.getRow() < 0 ||

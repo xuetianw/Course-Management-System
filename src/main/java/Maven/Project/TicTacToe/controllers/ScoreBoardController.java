@@ -1,6 +1,7 @@
 package Maven.Project.TicTacToe.controllers;
 
 import Maven.Project.TicTacToe.Service.PlayerService;
+import Maven.Project.TicTacToe.exception.ResourceNotFoundException;
 import Maven.Project.TicTacToe.model.Game;
 import Maven.Project.TicTacToe.model.Player;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +24,11 @@ public class ScoreBoardController {
 
 
     @GetMapping("/players")
-    public List<Player> getAllPlayers(){
+    public List<Player> getAllPlayers() {
         return playerService.findAll();
     }
 
-    @GetMapping("/player/{playerId}")
+    @GetMapping("/players/{playerId}")
     public Player findPlayer(@PathVariable int playerId) {
 
         Player thePlayer = playerService.findById(playerId);
@@ -57,7 +58,7 @@ public class ScoreBoardController {
 
     @PutMapping("/players")
     @ResponseStatus(HttpStatus.CREATED)
-    public Player updatePlayer(@RequestBody Player player){
+    public Player updatePlayer(@RequestBody Player player) {
 //        Player thePlayer = playerService.findById(player.getId());
 //
 //        if (thePlayer == null) {
@@ -68,8 +69,8 @@ public class ScoreBoardController {
         return player;
     }
 
-    @DeleteMapping("/player/{employeeId}")
-    public String deleteEmployee(@PathVariable int playerId) {
+    @DeleteMapping("/players/{playerId}")
+    public String deletePlayer(@PathVariable int playerId) {
 
         Player thePlayer = playerService.findById(playerId);
 
@@ -108,7 +109,7 @@ public class ScoreBoardController {
         List<Player> myUsers = playerService.findAll();
         for (Player user : myUsers) {
             if (user != null
-                    && user.getEmail().equalsIgnoreCase(newUser.getEmail())
+                    && user.getEmail().equals(newUser.getEmail())
             ) {
                 throw new RuntimeException("User with same email address already created.");
             }
@@ -120,5 +121,22 @@ public class ScoreBoardController {
         // Add it to repository, returning what is actually created in DB
         playerService.save(newUser);
         return newUser;
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/login")
+    public Player login(@RequestBody Player theUser) {
+        // Already exist?
+        List<Player> myUsers = playerService.findAll();
+        for (Player user : myUsers) {
+            if (user != null
+                    && user.getEmail().equals(theUser.getEmail())
+                    && user.getPassword().equals(theUser.getPassword())
+            ) {
+                return user;
+            }
+        }
+
+        throw new UnauthorisedException("invalid credential.");
     }
 }
