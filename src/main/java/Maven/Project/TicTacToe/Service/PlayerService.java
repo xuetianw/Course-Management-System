@@ -10,7 +10,7 @@ public interface PlayerService {
 
     public Player findById(int theId);
 
-    public void save(Player theEmployee);
+    public void save(Player player);
 
     public void deleteById(int theId);
 

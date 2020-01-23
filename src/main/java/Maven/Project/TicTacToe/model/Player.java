@@ -26,6 +26,13 @@ public class Player {
     @Column(name="played_time")
     private int times_played;
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public int getId() {
         return id;

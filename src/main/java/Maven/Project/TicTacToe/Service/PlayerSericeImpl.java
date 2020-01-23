@@ -36,8 +36,8 @@ public class PlayerSericeImpl implements PlayerService {
     }
 
     @Override
-    public void save(Player thePlayer) {
-        playerRepository.save(thePlayer);
+    public void save(Player player) {
+        playerRepository.save(player);
     }
 
     @Override
