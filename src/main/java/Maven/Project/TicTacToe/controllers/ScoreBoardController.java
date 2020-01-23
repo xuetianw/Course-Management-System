@@ -1,6 +1,7 @@
 package Maven.Project.TicTacToe.controllers;
 
 import Maven.Project.TicTacToe.Service.UserService;
+import Maven.Project.TicTacToe.exception.ResourceNotFoundException;
 import Maven.Project.TicTacToe.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,7 +36,7 @@ public class ScoreBoardController {
             return theUser;
         }
 
-        throw new RuntimeException("player id does not existed - " + playerId);
+        throw new ResourceNotFoundException("player id does not existed - " + playerId);
 
     }
 
@@ -75,7 +76,7 @@ public class ScoreBoardController {
         // throw exception if null
 
         if (theUser == null) {
-            throw new RuntimeException("player id not found - " + playerId);
+            throw new ResourceNotFoundException("player id not found - " + playerId);
         }
 
         userService.deleteById(playerId);
@@ -94,13 +95,13 @@ public class ScoreBoardController {
 
         // Check it:
         if (newUser.getEmail() == null || newUser.getEmail().isEmpty()) {
-            throw new RuntimeException("User email address must not be empty.");
+            throw new ResourceNotFoundException("User email address must not be empty.");
         }
         if (newUser.getFirst_name() == null || newUser.getLast_name().isEmpty()) {
-            throw new RuntimeException("User name must not be empty.");
+            throw new ResourceNotFoundException("User name must not be empty.");
         }
         if (newUser.getPassword() == null || newUser.getPassword().isEmpty()) {
-            throw new RuntimeException("User password must not be empty.");
+            throw new ResourceNotFoundException("User password must not be empty.");
         }
 
         // Already exist?

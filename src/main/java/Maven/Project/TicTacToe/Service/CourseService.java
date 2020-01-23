@@ -4,7 +4,7 @@ import Maven.Project.TicTacToe.model.Course;
 
 import java.util.List;
 
-interface CourseService {
+public interface CourseService {
     public List<Course> findAll();
 
     public Course findById(int theId);

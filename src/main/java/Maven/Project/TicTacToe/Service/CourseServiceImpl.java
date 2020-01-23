@@ -3,10 +3,12 @@ package Maven.Project.TicTacToe.Service;
 import Maven.Project.TicTacToe.Repository.CourseRepository;
 import Maven.Project.TicTacToe.model.Course;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class CourseServiceImpl implements CourseService{
     private CourseRepository courseRepository;
 
