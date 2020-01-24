@@ -1,4 +1,4 @@
-# Tic-Tac-Toe
+# Course Management System
 
 This branch has spring boot Maven (shifted from gradle).  
 
