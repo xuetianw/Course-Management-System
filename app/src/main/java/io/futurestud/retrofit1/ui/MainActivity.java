@@ -1,5 +1,7 @@
 package io.futurestud.retrofit1.ui;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -38,6 +40,10 @@ public class MainActivity extends AppCompatActivity {
     char previous_play;
     private static long game_number = 0;
     private WGServerProxy proxy;
+
+    public static Intent makeIntent(Context context) {
+        return new Intent(context, MainActivity.class);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

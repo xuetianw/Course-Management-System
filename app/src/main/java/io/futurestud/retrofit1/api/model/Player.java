@@ -9,6 +9,20 @@ public class Player {
 
     private int times_played;
 
+    private String password;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Player() {
+        times_played = 0;
+    }
+
     public String getFirst_name() {
         return first_name;
     }

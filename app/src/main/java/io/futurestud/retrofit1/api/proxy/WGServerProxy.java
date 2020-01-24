@@ -9,6 +9,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -35,20 +36,26 @@ public interface WGServerProxy {
     @GET("games/{id}")
     Call<Game> getGame(@Path("id") Long id);
 
-    @GET("/players")
+    @GET("players")
     Call<Player> getAllPlayer();
 
-    @GET ("/player")
+    @HTTP(method = "GET", path = "/player", hasBody = true)
     Call<Player> getlPlayer(@Body Player player);
 
-    @POST("/player")
+    @POST("player")
     Call<Player> make_player(@Body Player player);
 
-    @DELETE("/player")
+    @DELETE("player")
     Call<Player> delete_player(@Body Player player);
 
-    @PUT("/player")
+    @PUT("player")
     Call <Player> updatePlayer(@Body Player player);
+
+    @PUT("login")
+    Call <Player> login(@Body Player player);
+
+    @POST("/signup")
+    Call<Player> sign_up(@Body Player player);
 
 
 }
