@@ -2,6 +2,7 @@ package io.futurestud.retrofit1.api.proxy;
 
 import java.util.List;
 
+import io.futurestud.retrofit1.api.model.Course;
 import io.futurestud.retrofit1.api.model.Game;
 import io.futurestud.retrofit1.api.model.Move;
 import io.futurestud.retrofit1.api.model.Player;
@@ -56,6 +57,11 @@ public interface WGServerProxy {
 
     @POST("/signup")
     Call<Player> sign_up(@Body Player player);
+
+    @GET("/courses")
+    Call<List<Course>> get_courses();
+
+
 
 
 }
