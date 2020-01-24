@@ -5,7 +5,7 @@ import java.util.List;
 import io.futurestud.retrofit1.api.model.Course;
 import io.futurestud.retrofit1.api.model.Game;
 import io.futurestud.retrofit1.api.model.Move;
-import io.futurestud.retrofit1.api.model.Player;
+import io.futurestud.retrofit1.api.model.Student;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -38,30 +38,30 @@ public interface WGServerProxy {
     Call<Game> getGame(@Path("id") Long id);
 
     @GET("players")
-    Call<Player> getAllPlayer();
+    Call<Student> getAllPlayer();
 
-    @HTTP(method = "GET", path = "/player", hasBody = true)
-    Call<Player> getlPlayer(@Body Player player);
+    @HTTP(method = "GET", path = "/student", hasBody = true)
+    Call<Student> getlPlayer(@Body Student student);
 
-    @POST("player")
-    Call<Player> make_player(@Body Player player);
+    @POST("student")
+    Call<Student> make_player(@Body Student student);
 
-    @DELETE("player")
-    Call<Player> delete_player(@Body Player player);
+    @DELETE("student")
+    Call<Student> delete_player(@Body Student student);
 
-    @PUT("player")
-    Call <Player> updatePlayer(@Body Player player);
+    @PUT("student")
+    Call <Student> updatePlayer(@Body Student student);
 
     @PUT("login")
-    Call <Player> login(@Body Player player);
+    Call <Student> login(@Body Student student);
 
     @POST("/signup")
-    Call<Player> sign_up(@Body Player player);
+    Call<Student> sign_up(@Body Student student);
 
     @GET("/courses")
     Call<List<Course>> get_courses();
 
-
-
+    @POST("/courses")
+    Call<Course> add_course(@Body Course course);
 
 }

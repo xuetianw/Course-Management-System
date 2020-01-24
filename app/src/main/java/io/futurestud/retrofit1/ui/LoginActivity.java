@@ -9,7 +9,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import io.futurestud.retrofit1.R;
-import io.futurestud.retrofit1.api.model.Player;
+import io.futurestud.retrofit1.api.model.Student;
 import io.futurestud.retrofit1.api.proxy.ProxyBuilder;
 import io.futurestud.retrofit1.api.proxy.WGServerProxy;
 import retrofit2.Call;
@@ -20,7 +20,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText first_nameET;
     EditText last_nameET;
     EditText pass_wordET;
-    Player player;
+    Student student;
     private WGServerProxy proxy;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +48,12 @@ public class LoginActivity extends AppCompatActivity {
                 String first_name = first_nameET.getText().toString();
                 String last_name = last_nameET.getText().toString();
                 String password = pass_wordET.getText().toString();
-                player = new Player();
-                player.setEmail(email);
-                player.setFirst_name(first_name);
-                player.setLast_name(last_name);
-                player.setPassword(password);
-                Call<Player> call = proxy.login(player);
+                student = new Student();
+                student.setEmail(email);
+                student.setFirst_name(first_name);
+                student.setLast_name(last_name);
+                student.setPassword(password);
+                Call<Student> call = proxy.login(student);
                 ProxyBuilder.callProxy(getApplicationContext(), call, returnedKey -> response(returnedKey));
             }
         });
@@ -69,20 +69,20 @@ public class LoginActivity extends AppCompatActivity {
                 String first_name = first_nameET.getText().toString();
                 String last_name = last_nameET.getText().toString();
                 String password = pass_wordET.getText().toString();
-                player = new Player();
-                player.setEmail(email);
-                player.setFirst_name(first_name);
-                player.setLast_name(last_name);
-                player.setPassword(password);
-                Call<Player> call = proxy.sign_up(player);
+                student = new Student();
+                student.setEmail(email);
+                student.setFirst_name(first_name);
+                student.setLast_name(last_name);
+                student.setPassword(password);
+                Call<Student> call = proxy.sign_up(student);
                 ProxyBuilder.callProxy(getApplicationContext(), call, returnedKey -> response(returnedKey));
             }
         });
     }
 
-    private void response(Player returnedKey) {
+    private void response(Student returnedKey) {
         if((returnedKey == null)) {
-            Toast.makeText(getApplicationContext(), "player does not exist",
+            Toast.makeText(getApplicationContext(), "student does not exist",
                     Toast.LENGTH_LONG).show();
         } else {
             Intent intent = MainActivity.makeIntent(LoginActivity.this);

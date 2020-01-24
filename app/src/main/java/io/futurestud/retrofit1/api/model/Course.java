@@ -7,8 +7,8 @@ public class Course {
 
     private String title;
 
-//    private List<Player> users;
 
+//    private List<Student> users;
     public int getId() {
         return id;
     }
@@ -25,11 +25,15 @@ public class Course {
         this.title = title;
     }
 
-//    public List<Player> getUsers() {
+    public Course(String title) {
+        this.title = title;
+    }
+
+//    public List<Student> getUsers() {
 //        return users;
 //    }
 //
-//    public void setUsers(List<Player> users) {
+//    public void setUsers(List<Student> users) {
 //        this.users = users;
 //    }
 }

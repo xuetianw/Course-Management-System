@@ -1,6 +1,6 @@
 package io.futurestud.retrofit1.api.model;
 
-public class Player {
+public class Student {
     private String email;
 
     private String first_name;
@@ -19,7 +19,7 @@ public class Player {
         this.password = password;
     }
 
-    public Player() {
+    public Student() {
         times_played = 0;
     }
 

@@ -7,7 +7,7 @@
     tools:context=".ui.CourseActivity">
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/save_buttonId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="12dp"
@@ -15,7 +15,7 @@
         android:text="save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/editText"
+        app:layout_constraintStart_toEndOf="@+id/add_courseETId"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <ListView
@@ -39,19 +39,19 @@
         android:layout_marginBottom="45dp"
         android:text="add course"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toTopOf="@+id/save_buttonId"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/course_listId" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/add_courseETId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
         android:ems="10"
-        android:hint="course Name"
+        android:hint="course Tittle"
         android:inputType="textPersonName"
-        app:layout_constraintBaseline_toBaselineOf="@+id/button"
-        app:layout_constraintEnd_toStartOf="@+id/button"
+        app:layout_constraintBaseline_toBaselineOf="@+id/save_buttonId"
+        app:layout_constraintEnd_toStartOf="@+id/save_buttonId"
         app:layout_constraintStart_toStartOf="parent" />
 </android.support.constraint.ConstraintLayout>
