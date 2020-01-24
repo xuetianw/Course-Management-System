@@ -1,4 +1,7 @@
-package Maven.Project.TicTacToe.model;
+package CourseManagementProject.model;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Table(name="course")
 public class Course {
     @Id
@@ -25,6 +29,7 @@ public class Course {
     @Column(name="title")
     private String title;
 
+    @JsonIgnore
     @ManyToMany(fetch=FetchType.LAZY,
             cascade= {CascadeType.PERSIST, CascadeType.MERGE,
                     CascadeType.DETACH, CascadeType.REFRESH})
@@ -33,10 +38,13 @@ public class Course {
             joinColumns=@JoinColumn(name="course_id"),
             inverseJoinColumns=@JoinColumn(name="student_id")
     )
-    private List<Course> courses;
+    private List<Student> students;
 
     public Course(String title) {
         this.title = title;
+    }
+
+    public Course() {
     }
 
     public int getId() {
@@ -55,22 +63,22 @@ public class Course {
         this.title = title;
     }
 
-    public List<Course> getUsers() {
-        return courses;
+    public List<Student> getStudents() {
+        return students;
     }
 
-    public void setUsers(List<Course> users) {
-        this.courses = users;
+    public void setStudents(List<Student> students) {
+        this.students = students;
     }
 
     // add a convenience method
 
-    public void addStudent(Course course) {
+    public void addStudent(Student student) {
 
-        if (courses == null) {
-            courses = new ArrayList<>();
+        if (students == null) {
+            students = new ArrayList<>();
         }
 
-        courses.add(course);
+        students.add(student);
     }
 }

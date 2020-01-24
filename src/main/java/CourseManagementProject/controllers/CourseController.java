@@ -1,8 +1,8 @@
-package Maven.Project.TicTacToe.controllers;
+package CourseManagementProject.controllers;
 
-import Maven.Project.TicTacToe.Service.CourseService;
-import Maven.Project.TicTacToe.exception.ResourceNotFoundException;
-import Maven.Project.TicTacToe.model.Course;
+import CourseManagementProject.model.Course;
+import CourseManagementProject.Service.CourseService;
+import CourseManagementProject.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +21,8 @@ public class CourseController {
 
     @GetMapping("/courses")
     public List<Course> getAllPlayers() {
-        return courseService.findAll();
+        List<Course> temp = courseService.findAll();
+        return temp;
     }
 
     @GetMapping("/courses/{courserId}")
@@ -62,7 +63,7 @@ public class CourseController {
         // throw exception if null
 
         if (theUser == null) {
-            throw new RuntimeException("course id not found - " + courseId);
+            throw new ResourceNotFoundException("course id not found - " + courseId);
         }
 
         courseService.deleteById(courseId);

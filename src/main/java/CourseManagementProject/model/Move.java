@@ -1,4 +1,4 @@
-package Maven.Project.TicTacToe.model;
+package CourseManagementProject.model;
 
 /*
     Move class is responsible for receiving and setting the

@@ -1,7 +1,7 @@
-package Maven.Project.TicTacToe.Service;
+package CourseManagementProject.Service;
 
-import Maven.Project.TicTacToe.Repository.PlayerRepository;
-import Maven.Project.TicTacToe.model.User;
+import CourseManagementProject.Repository.PlayerRepository;
+import CourseManagementProject.model.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +19,13 @@ public class UserSericeImpl implements UserService {
     }
 
     @Override
-    public List<User> findAll() {
+    public List<Student> findAll() {
         return playerRepository.findAll();
     }
 
     @Override
-    public User findById(int theId) {
-        Optional<User> result = playerRepository.findById(theId);
+    public Student findById(int theId) {
+        Optional<Student> result = playerRepository.findById(theId);
 
         if (result.isPresent()) {
             return result.get();
@@ -36,8 +36,8 @@ public class UserSericeImpl implements UserService {
     }
 
     @Override
-    public void save(User user) {
-        playerRepository.save(user);
+    public void save(Student student) {
+        playerRepository.save(student);
     }
 
     @Override

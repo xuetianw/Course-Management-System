@@ -1,6 +1,6 @@
-package Maven.Project.TicTacToe.Repository;
+package CourseManagementProject.Repository;
 
-import Maven.Project.TicTacToe.model.Course;
+import CourseManagementProject.model.Course;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 

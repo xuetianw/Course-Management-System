@@ -1,6 +1,6 @@
-package Maven.Project.TicTacToe.model;
+package CourseManagementProject.model;
 
-import Maven.Project.TicTacToe.exception.InvalidMoveException;
+import CourseManagementProject.exception.InvalidMoveException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.util.ArrayList;

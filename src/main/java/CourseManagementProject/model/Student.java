@@ -1,10 +1,10 @@
-package Maven.Project.TicTacToe.model;
+package CourseManagementProject.model;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name="user")
-public class User {
+public class Student {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)

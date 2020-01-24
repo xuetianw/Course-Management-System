@@ -1,4 +1,4 @@
-package Maven.Project.TicTacToe.exception;
+package CourseManagementProject.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

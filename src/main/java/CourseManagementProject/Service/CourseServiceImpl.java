@@ -1,7 +1,7 @@
-package Maven.Project.TicTacToe.Service;
+package CourseManagementProject.Service;
 
-import Maven.Project.TicTacToe.Repository.CourseRepository;
-import Maven.Project.TicTacToe.model.Course;
+import CourseManagementProject.model.Course;
+import CourseManagementProject.Repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

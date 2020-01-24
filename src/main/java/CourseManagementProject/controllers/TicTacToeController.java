@@ -1,10 +1,9 @@
-package Maven.Project.TicTacToe.controllers;
+package CourseManagementProject.controllers;
 
 
-import Maven.Project.TicTacToe.exception.InvalidMoveException;
-import Maven.Project.TicTacToe.exception.ResourceNotFoundException;
-import Maven.Project.TicTacToe.model.Game;
-import Maven.Project.TicTacToe.model.Move;
+import CourseManagementProject.exception.ResourceNotFoundException;
+import CourseManagementProject.model.Game;
+import CourseManagementProject.model.Move;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 

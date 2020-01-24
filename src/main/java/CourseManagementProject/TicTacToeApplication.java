@@ -1,4 +1,4 @@
-package Maven.Project.TicTacToe;
+package CourseManagementProject;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
