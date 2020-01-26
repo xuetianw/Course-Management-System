@@ -2,6 +2,8 @@ package CourseManagementProject.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@JsonIgnoreProperties(ignoreUnknown = true)
 @Table(name="course")
 public class Course {
     @Id
@@ -29,8 +30,10 @@ public class Course {
     @Column(name="title")
     private String title;
 
-    @JsonIgnore
-    @ManyToMany(fetch=FetchType.LAZY,
+//    @JsonIgnore
+    @JsonSerialize(using = IdItem.IdItemSetSerializer.class)
+    @JsonDeserialize(using = IdItem.IdItemSetDisableDeserializer.class)
+    @ManyToMany(fetch=FetchType.EAGER,
             cascade= {CascadeType.PERSIST, CascadeType.MERGE,
                     CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(
