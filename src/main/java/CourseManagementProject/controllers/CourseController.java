@@ -56,7 +56,7 @@ public class CourseController {
     }
 
     @DeleteMapping("/courses/{courserId}")
-    public String deletePlayer(@PathVariable int courseId) {
+    public String deletePlayer(@PathVariable("courserId") int courseId) {
 
         Course theUser = courseService.findById(courseId);
 
