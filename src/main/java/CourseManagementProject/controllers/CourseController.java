@@ -26,7 +26,7 @@ public class CourseController {
     }
 
     @GetMapping("/courses/{courserId}")
-    public Course findPlayer(@PathVariable int courseId) {
+    public Course findPlayer(@PathVariable("courserId") int courseId) {
 
         Course theCourse = courseService.findById(courseId);
 

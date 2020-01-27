@@ -1,7 +1,6 @@
 package CourseManagementProject.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -20,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Table(name="course")
 public class Course {
     @Id
@@ -30,9 +30,7 @@ public class Course {
     @Column(name="title")
     private String title;
 
-//    @JsonIgnore
-    @JsonSerialize(using = IdItem.IdItemSetSerializer.class)
-    @JsonDeserialize(using = IdItem.IdItemSetDisableDeserializer.class)
+
     @ManyToMany(fetch=FetchType.EAGER,
             cascade= {CascadeType.PERSIST, CascadeType.MERGE,
                     CascadeType.DETACH, CascadeType.REFRESH})

@@ -1,6 +1,6 @@
 package CourseManagementProject.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Table(name="user")
 public class Student {
 
@@ -31,9 +32,6 @@ public class Student {
     @Column(name="played_time")
     private int times_played;
 
-//    @JsonIgnore
-    @JsonSerialize(using = IdItem.IdItemListSerializer.class)
-    @JsonDeserialize(using = IdItem.IdItemListDisableDeserializer.class)
     @ManyToMany(fetch=FetchType.EAGER,
             cascade= {CascadeType.PERSIST, CascadeType.MERGE,
                     CascadeType.DETACH, CascadeType.REFRESH})

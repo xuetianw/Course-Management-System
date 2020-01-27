@@ -15,9 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -149,36 +147,6 @@ abstract public class IdItem {
         }
     }
 
-    static public class IdItemListSerializer extends StdSerializer<List<IdItem>>
-    {
-        public IdItemListSerializer() {
-            this(null);
-        }
-
-
-        public IdItemListSerializer(Class<List<IdItem>> t) {
-            super(t);
-        }
-
-        @Override
-        public void serialize(
-                List<IdItem> items,
-                JsonGenerator generator,
-                SerializerProvider provider)
-                throws IOException, JsonProcessingException {
-
-            List <IdHref> info = new ArrayList<>();
-            for (IdItem item : items) {
-                info.add(
-                        new IdHref(
-                                item.getId(),
-                                item.getHref()
-                        ));
-            }
-            generator.writeObject(info);
-        }
-    }
-
 
     static public class IdItemSetDisableDeserializer extends StdDeserializer<Set<IdItem>> {
         public IdItemSetDisableDeserializer() {
@@ -194,24 +162,6 @@ abstract public class IdItem {
             // (Without this the text is left behind and prevents the rest of the object from deserializing)
             JsonNode node = p.getCodec().readTree(p);
             return new HashSet<>();
-        }
-    }
-
-
-    static public class IdItemListDisableDeserializer extends StdDeserializer<List<IdItem>> {
-        public IdItemListDisableDeserializer() {
-            this(null);
-        }
-        protected IdItemListDisableDeserializer(Class<List<IdItem>> t) {
-            super(t);
-        }
-
-        @Override
-        public List<IdItem> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
-            // Consume this element in the parse tree, thus letting the rest of the object deserialize.
-            // (Without this the text is left behind and prevents the rest of the object from deserializing)
-            JsonNode node = p.getCodec().readTree(p);
-            return new ArrayList<>();
         }
     }
 
