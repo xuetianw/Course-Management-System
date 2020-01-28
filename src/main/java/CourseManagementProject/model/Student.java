@@ -1,14 +1,13 @@
 package CourseManagementProject.model;
 
-import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import CourseManagementProject.others.CourseListSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Table(name="user")
 public class Student {
 
@@ -40,6 +39,7 @@ public class Student {
             joinColumns=@JoinColumn(name="student_id"),
             inverseJoinColumns=@JoinColumn(name="course_id")
     )
+    @JsonSerialize(using = CourseListSerializer.class)
     private List<Course> courses;
 
 

@@ -35,12 +35,12 @@ public class ScoreBoardController {
         Student theStudent = userService.findById(userId);
 
         if (theStudent != null) {
-            List<Course> list = theStudent.getCourses();
-            List<Course> res = new ArrayList<>();
-            for (Course course : list) {
-                res.add(new Course(course.getId()));
-            }
-            theStudent.setCourses(res);
+//            List<Course> list = theStudent.getCourses();
+//            List<Course> res = new ArrayList<>();
+//            for (Course course : list) {
+//                res.add(new Course(course.getId()));
+//            }
+//            theStudent.setCourses(res);
 //            temp.getCourses();
             return theStudent;
         }
