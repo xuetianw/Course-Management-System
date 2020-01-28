@@ -1,15 +1,46 @@
 package io.futurestud.retrofit1.api.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Student {
+    private int id;
+
     private String email;
 
     private String first_name;
 
     private String last_name;
 
-    private int times_played;
+//    private int times_played;
 
     private String password;
+
+    private List<Course> courses;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public List<Course> add_course(Course course) {
+        if (courses == null) {
+            courses = new ArrayList<>();
+        }
+        courses.add(course);
+        return courses;
+    }
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+    }
 
     public String getPassword() {
         return password;
@@ -19,9 +50,9 @@ public class Student {
         this.password = password;
     }
 
-    public Student() {
-        times_played = 0;
-    }
+//    public Student() {
+//        times_played = 0;
+//    }
 
     public String getFirst_name() {
         return first_name;
@@ -39,13 +70,13 @@ public class Student {
         this.last_name = last_name;
     }
 
-    public int getTimes_played() {
-        return times_played;
-    }
-
-    public void setTimes_played(int times_played) {
-        this.times_played = times_played;
-    }
+//    public int getTimes_played() {
+//        return times_played;
+//    }
+//
+//    public void setTimes_played(int times_played) {
+//        this.times_played = times_played;
+//    }
 
     public String getEmail() {
         return email;

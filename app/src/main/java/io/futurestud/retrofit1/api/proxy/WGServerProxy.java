@@ -37,19 +37,16 @@ public interface WGServerProxy {
     @GET("games/{id}")
     Call<Game> getGame(@Path("id") Long id);
 
-    @GET("players")
-    Call<Student> getAllPlayer();
+    @GET("users")
+    Call<Student> getAllUsers();
 
-    @HTTP(method = "GET", path = "/student", hasBody = true)
-    Call<Student> getlPlayer(@Body Student student);
-
-    @POST("student")
+    @POST("users")
     Call<Student> make_player(@Body Student student);
 
-    @DELETE("student")
+    @DELETE("users")
     Call<Student> delete_player(@Body Student student);
 
-    @PUT("student")
+    @PUT("users")
     Call <Student> updatePlayer(@Body Student student);
 
     @PUT("login")
@@ -63,5 +60,8 @@ public interface WGServerProxy {
 
     @POST("/courses")
     Call<Course> add_course(@Body Course course);
+
+    @GET("/users/{userId}")
+    Call<Student> getUser(@Path("userId") int studentId);
 
 }

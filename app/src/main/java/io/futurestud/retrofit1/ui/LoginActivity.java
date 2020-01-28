@@ -1,5 +1,6 @@
 package io.futurestud.retrofit1.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,7 +21,8 @@ public class LoginActivity extends AppCompatActivity {
     EditText first_nameET;
     EditText last_nameET;
     EditText pass_wordET;
-    Student student;
+
+    private static Student student;
     private WGServerProxy proxy;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,9 +87,17 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "student does not exist",
                     Toast.LENGTH_LONG).show();
         } else {
-            Intent intent = MainActivity.makeIntent(LoginActivity.this);
+            student = returnedKey;
+//            Intent intent = MainActivity.makeIntent(LoginActivity.this);
+            Intent intent = CourseActivity.makeIntent(LoginActivity.this);
+
             finish();
             startActivity(intent);
         }
+    }
+
+
+    public static Student getStudent() {
+        return student;
     }
 }

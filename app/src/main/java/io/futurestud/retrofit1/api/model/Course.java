@@ -1,5 +1,6 @@
 package io.futurestud.retrofit1.api.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Course {
@@ -7,8 +8,15 @@ public class Course {
 
     private String title;
 
+    private List<Student> students;
 
-//    private List<Student> users;
+    public void addStudent(Student student) {
+        if (students == null) {
+            students = new ArrayList<>();
+        }
+        students.add(student);
+    }
+
     public int getId() {
         return id;
     }
@@ -29,11 +37,16 @@ public class Course {
         this.title = title;
     }
 
-//    public List<Student> getUsers() {
-//        return users;
-//    }
-//
-//    public void setUsers(List<Student> users) {
-//        this.users = users;
-//    }
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
+
+    @Override
+    public String toString() {
+        return "Course [id=" + id + ", title=" + title + "]";
+    }
 }
