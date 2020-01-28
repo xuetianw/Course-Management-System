@@ -29,8 +29,8 @@ public class Student {
     @Column(name="last_name")
     private String last_name;
 
-    @Column(name="played_time")
-    private int times_played;
+//    @Column(name="played_time")
+//    private int times_played;
 
     @ManyToMany(fetch=FetchType.EAGER,
             cascade= {CascadeType.PERSIST, CascadeType.MERGE,
@@ -82,14 +82,6 @@ public class Student {
 
     public void setLast_name(String last_name) {
         this.last_name = last_name;
-    }
-
-    public int getTimes_played() {
-        return times_played;
-    }
-
-    public void setTimes_played(int times_played) {
-        this.times_played = times_played;
     }
 
     public String getEmail() {

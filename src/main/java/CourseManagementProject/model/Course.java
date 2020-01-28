@@ -33,12 +33,8 @@ public class Course {
 
     @ManyToMany(fetch=FetchType.EAGER,
             cascade= {CascadeType.PERSIST, CascadeType.MERGE,
-                    CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinTable(
-            name="course_student",
-            joinColumns=@JoinColumn(name="course_id"),
-            inverseJoinColumns=@JoinColumn(name="student_id")
-    )
+                    CascadeType.DETACH, CascadeType.REFRESH},
+    mappedBy = "courses")
     private List<Student> students;
 
     public Course(String title) {
@@ -46,6 +42,16 @@ public class Course {
     }
 
     public Course() {
+    }
+
+    public Course(int id) {
+        this.id = id;
+    }
+
+    public Course(int id, String title, List<Student> students) {
+        this.id = id;
+        this.title = title;
+        this.students = students;
     }
 
     public int getId() {

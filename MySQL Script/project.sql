@@ -13,7 +13,6 @@ CREATE TABLE `user` (
   `password` varchar(45) DEFAULT NULL,
   `first_name` varchar(45) DEFAULT NULL,
   `last_name` varchar(45) DEFAULT NULL,
-  `played_time` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 );
     
@@ -43,7 +42,7 @@ CREATE TABLE `course_student` (
   
   PRIMARY KEY (`course_id`,`student_id`),
   
-  KEY `FK_STUDENT_idx` (`student_id`),
+--   KEY `FK_STUDENT_idx` (`student_id`),
   
   CONSTRAINT `FK_COURSE` FOREIGN KEY (`course_id`) 
   REFERENCES `course` (`id`) 
@@ -53,3 +52,5 @@ CREATE TABLE `course_student` (
   REFERENCES `user` (`id`) 
   ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+

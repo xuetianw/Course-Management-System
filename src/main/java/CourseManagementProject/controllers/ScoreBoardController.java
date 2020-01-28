@@ -1,6 +1,7 @@
 package CourseManagementProject.controllers;
 
 import CourseManagementProject.exception.ResourceNotFoundException;
+import CourseManagementProject.model.Course;
 import CourseManagementProject.model.Student;
 import CourseManagementProject.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,21 +24,28 @@ public class ScoreBoardController {
     }
 
 
-    @GetMapping("/players")
+    @GetMapping("/users")
     public List<Student> getAllPlayers() {
         return userService.findAll();
     }
 
-    @GetMapping("/players/{playerId}")
-    public Student findPlayer(@PathVariable int playerId) {
+    @GetMapping("/users/{userId}")
+    public Student findPlayer(@PathVariable("userId") int userId) {
 
-        Student theStudent = userService.findById(playerId);
+        Student theStudent = userService.findById(userId);
 
         if (theStudent != null) {
+            List<Course> list = theStudent.getCourses();
+            List<Course> res = new ArrayList<>();
+            for (Course course : list) {
+                res.add(new Course(course.getId()));
+            }
+            theStudent.setCourses(res);
+//            temp.getCourses();
             return theStudent;
         }
 
-        throw new ResourceNotFoundException("player id does not existed - " + playerId);
+        throw new ResourceNotFoundException("player id does not existed - " + userId);
 
     }
 
@@ -144,6 +153,19 @@ public class ScoreBoardController {
         public InvalidLoginException(String s){
             super(s);
         }
+    }
+
+    @GetMapping("/users/{userId}/courses")
+    public Student findPlayerCourses(@PathVariable("userId") int userId) {
+
+        Student theStudent = userService.findById(userId);
+
+        if (theStudent != null) {
+            return theStudent;
+        }
+
+        throw new ResourceNotFoundException("player id does not existed - " + userId);
+
     }
 
 
