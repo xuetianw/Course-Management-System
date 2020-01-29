@@ -28,9 +28,9 @@ public class StudentListSerializer extends StdSerializer<List<Student>> {
             SerializerProvider provider)
             throws IOException, JsonProcessingException {
 
-        List<Integer> ids = new ArrayList<>();
+        List<Student> ids = new ArrayList<>();
         for (Student item : items) {
-            ids.add(item.getId());
+            ids.add(new Student(item.getId()));
         }
         generator.writeObject(ids);
     }

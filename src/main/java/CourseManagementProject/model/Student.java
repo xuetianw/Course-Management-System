@@ -42,6 +42,13 @@ public class Student {
     @JsonSerialize(using = CourseListSerializer.class)
     private List<Course> courses;
 
+    public Student(int id) {
+        this.id = id;
+    }
+
+    public Student() {
+    }
+
 
     public List<Course> getCourses() {
         return courses;

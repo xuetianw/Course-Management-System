@@ -27,10 +27,10 @@ public class CourseListSerializer extends StdSerializer<List<Course>> {
             SerializerProvider provider)
             throws IOException, JsonProcessingException {
 
-        List<Integer> ids = new ArrayList<>();
+        List<Course> ids = new ArrayList<>();
         for (Course item : items) {
-            ids.add(item.getId());
+            ids.add(new Course(item.getId(), item.getTitle()));
         }
-        generator.writeObject(ids);
+        generator.writeObject(items);
     }
 }
