@@ -1,7 +1,8 @@
 package CourseManagementProject.model;
 
-import CourseManagementProject.others.CourseListSerializer;
+import CourseManagementProject.others.StudentListDeserializer;
 import CourseManagementProject.others.StudentListSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import javax.persistence.*;
@@ -30,6 +31,7 @@ public class Course {
             inverseJoinColumns=@JoinColumn(name="student_id")
     )
     @JsonSerialize(using = StudentListSerializer.class)
+    @JsonDeserialize(using = StudentListDeserializer.class)
     private List<Student> students;
 
     public Course(String title) {
