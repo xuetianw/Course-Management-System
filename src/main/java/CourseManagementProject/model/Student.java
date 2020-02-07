@@ -30,9 +30,6 @@ public class Student {
     @Column(name="last_name")
     private String last_name;
 
-//    @Column(name="played_time")
-//    private int times_played;
-
     @ManyToMany(fetch=FetchType.EAGER,
             cascade= {CascadeType.PERSIST, CascadeType.MERGE,
                     CascadeType.DETACH, CascadeType.REFRESH})
