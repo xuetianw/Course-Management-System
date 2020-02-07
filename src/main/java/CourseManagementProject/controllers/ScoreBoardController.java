@@ -35,13 +35,6 @@ public class ScoreBoardController {
         Student theStudent = userService.findById(userId);
 
         if (theStudent != null) {
-//            List<Course> list = theStudent.getCourses();
-//            List<Course> res = new ArrayList<>();
-//            for (Course course : list) {
-//                res.add(new Course(course.getId()));
-//            }
-//            theStudent.setCourses(res);
-//            temp.getCourses();
             return theStudent;
         }
 
@@ -54,11 +47,6 @@ public class ScoreBoardController {
     public Student createNewPlayer(@RequestBody Student student) {
         student.setId(0);
 
-//        Student thePlayer = userService.findById(student.getId());
-//
-//        if (thePlayer != null) {
-//            throw new RuntimeException("student id existed - " + student.getEmail());
-//        }
 
         userService.save(student);
         return student;
@@ -67,11 +55,6 @@ public class ScoreBoardController {
     @PutMapping("/players")
     @ResponseStatus(HttpStatus.CREATED)
     public Student updatePlayer(@RequestBody Student student) {
-//        Student thePlayer = userService.findById(student.getId());
-//
-//        if (thePlayer == null) {
-//            throw new RuntimeException("student email not found - " + student.getEmail());
-//        }
 
         userService.save(student);
         return student;
@@ -165,8 +148,6 @@ public class ScoreBoardController {
         }
 
         throw new ResourceNotFoundException("player id does not existed - " + userId);
-
     }
-
 
 }

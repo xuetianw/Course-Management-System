@@ -34,10 +34,6 @@ abstract public class IdItem {
     @JsonIgnore
     private String apiKeyForItem;
 
-
-
-
-
     public IdItem(String urlPrefix) {
         this.urlPrefix = urlPrefix;
     }
