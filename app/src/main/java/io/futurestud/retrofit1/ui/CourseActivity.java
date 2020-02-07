@@ -24,6 +24,7 @@ import retrofit2.Call;
 public class CourseActivity extends AppCompatActivity {
     private WGServerProxy proxy;
     EditText courseET;
+    Student student;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,50 +48,37 @@ public class CourseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                int id = getStudent().getId();
-                int id = 2;
-                Call<Student> call = proxy.getUser(id);
+//                int id = 2;
+                Course tempCourse1 = new Course(courseET.getText().toString());
+
+                tempCourse1.setStudents(student);
+
+                Call<Course> call = proxy.add_course(tempCourse1);
                 ProxyBuilder.callProxy(getApplicationContext(), call, returnedKey -> add_courseresponse(returnedKey));
             }
         });
     }
 
-    private void add_courseresponse(Student response) {
-        if((response == null)) {
-            Toast.makeText(getApplicationContext(), "Server replied",
-                    Toast.LENGTH_LONG).show();
-        } else {
-            Student tempStudent = response;
-            Course tempCourse1 = new Course(courseET.getText().toString());
-
-            tempStudent.getCourses().add(tempCourse1);
-
-            // add student to courses
-            tempCourse1.addStudent(tempStudent);
-
-            Call<Course> call = proxy.add_course(tempCourse1);
-            ProxyBuilder.callProxy(getApplicationContext(), call, returnedKey -> add_courseresponse(returnedKey));
-        }
-    }
-
     private void populateListView() {
-        int id = 2;
-        Call<Student> call = proxy.getUser(id);
+//        int id = 2;
+//        Call<Student> call = proxy.getUser(id);
+        Call<List<Course>> call = proxy.get_courses();
         ProxyBuilder.callProxy(getApplicationContext(), call, returnedKey -> response_listView(returnedKey));
     }
 
-    private void response_listView(Student response) {
+    private void response_listView(List<Course> response) {
         if((response == null)) {
             Toast.makeText(getApplicationContext(), "Server replied",
                     Toast.LENGTH_LONG).show();
         } else {
             List<String> courses_str_list = new ArrayList<>();
 
-            Student student = response;
-            if (response.getCourses() == null) {
+            List<Course> courses = response;
+            if (courses.size() == 0) {
                 Toast.makeText(getApplicationContext(), "no courses registered",
                         Toast.LENGTH_LONG).show();
             } else {
-                for (Course course : student.getCourses()) {
+                for (Course course : courses) {
                     String temp = String.format("course id : %s \ncourse title : %s", course.getId(), course.getTitle());
                     courses_str_list.add(temp);
                 }
@@ -105,6 +93,8 @@ public class CourseActivity extends AppCompatActivity {
             list.setAdapter(adapter);
         }
     }
+
+
 
     private void add_courseresponse(Course response) {
         if((response == null)) {

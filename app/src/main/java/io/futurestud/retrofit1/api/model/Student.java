@@ -1,5 +1,6 @@
 package io.futurestud.retrofit1.api.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,11 +13,17 @@ public class Student {
 
     private String last_name;
 
-//    private int times_played;
 
     private String password;
 
     private List<Course> courses;
+
+    public Student(int id) {
+        this.id = id;
+    }
+
+    public Student() {
+    }
 
     public int getId() {
         return id;

@@ -5,6 +5,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,8 +46,7 @@ public class ProxyBuilder {
      * @param callback  Client-code to execute when we have a good answer for them.
      * @param <T>       The type of data that Call object is expected to fetch
      */
-    public static <T extends Object> void callProxy(
-            final Context context, Call<T> caller, final SimpleCallback<T> callback) {
+    public static <T extends Object> void callProxy(final Context context, Call<T> caller, final SimpleCallback<T> callback) {
         caller.enqueue(new Callback<T>() {
             @Override
             public void onResponse(Call<T> call, retrofit2.Response<T> response) {

@@ -88,8 +88,7 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
         } else {
             student = returnedKey;
-//            Intent intent = MainActivity.makeIntent(LoginActivity.this);
-            Intent intent = CourseActivity.makeIntent(LoginActivity.this);
+            Intent intent = MainActivity.makeIntent(LoginActivity.this);
 
             finish();
             startActivity(intent);
